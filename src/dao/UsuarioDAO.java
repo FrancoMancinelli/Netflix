@@ -99,6 +99,30 @@ public class UsuarioDAO extends AbstractDAO {
 		return 0; 
 	}
 	
+	public boolean emailExist(String email) {
+		final String QUERY = "SELECT email FROM usuarios "+
+							"WHERE email = '" + email + "'";
+		try { 
+	         ResultSet rs = stmt.executeQuery(QUERY);		      
+	         return rs.next();
+	      } catch (SQLException e) {
+	         e.printStackTrace();
+	      } 
+			return false;
+	}
+	
+	public void changePassword(String email, String pass) {
+		final String UPDATE = "UPDATE netflix.usuarios\r\n"
+				+ "SET\r\n"
+				+ "password = '"+pass+"'\r\n"
+				+ "WHERE email = '"+email+"';";
+		try {
+			stmt.executeUpdate(UPDATE);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	/**
 	 * Actualiza la contraseña de un usuario en la base de datos
 	 * @param pass La contraseña nueva a actualizar

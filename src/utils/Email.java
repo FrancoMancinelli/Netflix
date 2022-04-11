@@ -92,4 +92,44 @@ public class Email {
             e.printStackTrace();
         }
 	}
+
+	public void sendEmailForgotPw (String email, int codigo) {
+
+        Properties prop = new Properties();
+		prop.put("mail.smtp.host", "smtp.gmail.com");
+        prop.put("mail.smtp.port", "587");
+        prop.put("mail.smtp.auth", "true");
+        prop.put("mail.smtp.ssl.trust", "*");
+        prop.put("mail.smtp.starttls.required", "true");
+        prop.put("mail.smtp.ssl.protocols", "TLSv1.2"); //TLS
+        
+        Session session = Session.getInstance(prop,
+                new javax.mail.Authenticator() {
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication(username, password);
+                    }
+                });
+
+        try {
+
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress("netflixpicassodam@gmail.com"));
+            message.setRecipients(
+                    Message.RecipientType.TO,
+                    InternetAddress.parse(email)
+            );
+            message.setSubject("Código de Verificación - Netflix");
+            message.setText("Alerta por intento de cambio de contraseña, si no has sido tu ignora este correo."
+            				+"\n\nPara cambiar tu contraseña es necesario introduzcas el código de verificación"
+            				+ "\nA continuación encontraras tu nuevo código de verificación. Introducelo en la pagina de Netflix para continuar"
+            				+"\n\nCódigo: "+codigo);
+
+            Transport.send(message);
+
+            System.out.println("Codigo de verificación enviado correctamente");
+
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+	}
 }

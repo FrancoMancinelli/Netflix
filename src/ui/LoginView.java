@@ -497,7 +497,7 @@ public class LoginView {
     
     public boolean checkVerification(String email) {
     	if(checkVaciosCodigo()) {
-    		JOptionPane.showMessageDialog(btnEnviar, "ERR0R! -  Rellena todos los campos");
+    		JOptionPane.showMessageDialog(btnVerificar, "ERR0R! -  Rellena todos los campos");
 			return false;
     	}
     	
