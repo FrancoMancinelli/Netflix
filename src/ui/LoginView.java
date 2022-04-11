@@ -27,12 +27,10 @@ import utils.JTextFieldLimit;
 public class LoginView {
 
 	private JFrame frmLogin;
-	private JPanel imgPanel;
-	
 	private JPanel basePanel;
 	private JLabel imgFondo;
 	
-	private JPanel datosPanelLogin;
+	private JPanel panelLogin;
 	private JLabel lblIniciarSesion;
 	private JTextField txfEmailLogin;
 	private JPasswordField pwPassLogin;
@@ -40,7 +38,7 @@ public class LoginView {
 	private JButton btnForgottenPss;
 	private JButton btnRegistrarse;
 	
-	private JPanel datosPanelRegist;
+	private JPanel panelRegist;
 	private JLabel lblRegistrarse;
 	private JTextField txfEmailRegist;
 	private JTextField txfName;
@@ -49,7 +47,7 @@ public class LoginView {
 	private JButton btnEnviar;
 	private JButton btnVolver;
 	
-	private JPanel datosPanelCodigo;
+	private JPanel panelVerify;
 	private JLabel lblVerifiacion;
 	private JTextField txfCod1;
 	private JTextField txfCod2;
@@ -83,220 +81,15 @@ public class LoginView {
 		frmLogin.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmLogin.getContentPane().setLayout(null);
 
-		
-	
 		basePanel = new JPanel();
 		basePanel.setBounds(0, 0, 634, 526);
 		basePanel.setForeground(new Color(0,0,0,0));
 		frmLogin.getContentPane().add(basePanel);
 		basePanel.setLayout(null);
 		
-	// PANEL LOGIN
-		
-		datosPanelLogin = new JPanel();
-		datosPanelLogin.setBackground(Color.BLACK);
-		datosPanelLogin.setBounds(157, 94, 301, 375);
-		basePanel.add(datosPanelLogin);
-		datosPanelLogin.setBackground(new Color(0,0,0,220));
-		datosPanelLogin.setLayout(null);
-		
-		lblIniciarSesion = new JLabel("Iniciar sesi\u00F3n");
-		lblIniciarSesion.setFont(new Font("Trebuchet MS", Font.BOLD, 25));
-		lblIniciarSesion.setForeground(Color.WHITE);
-		lblIniciarSesion.setBounds(35, 23, 182, 45);
-		datosPanelLogin.add(lblIniciarSesion);
-		
-		txfEmailLogin = new JTextField();
-		txfEmailLogin.setForeground(new Color(128, 140, 140));
-		txfEmailLogin.setFont(new Font("Arial", Font.PLAIN, 12));
-		txfEmailLogin.setText("  Email");
-		txfEmailLogin.setBackground(new Color(51,51,51));
-		txfEmailLogin.setBounds(35, 87, 228, 45);
-		datosPanelLogin.add(txfEmailLogin);
-		txfEmailLogin.setColumns(10);
-		txfEmailLogin.setBorder(null);
-		
-		pwPassLogin = new JPasswordField();
-		pwPassLogin.setForeground(new Color(128, 140, 140));
-		pwPassLogin.setBackground(new Color(51,51,51));
-		pwPassLogin.setBounds(35, 143, 228, 45);
-		datosPanelLogin.add(pwPassLogin);
-		pwPassLogin.setBorder(null);
-		
-		btnIniciarSesion = new JButton("Iniciar sesi\u00F3n");
-
-		btnIniciarSesion.setFont(new Font("Trebuchet MS", Font.BOLD, 17));
-		btnIniciarSesion.setBackground(new Color(229, 9, 20));
-		btnIniciarSesion.setForeground(Color.WHITE);
-		btnIniciarSesion.setBounds(35, 224, 228, 45);
-		datosPanelLogin.add(btnIniciarSesion);
-		btnIniciarSesion.setBorder(null);
-		
-		btnForgottenPss = new JButton("<HTML>¿Contraseña Olvidada? <U>Recuperala aquí</U></HTML>");
-		btnForgottenPss.setHorizontalAlignment(SwingConstants.LEFT);
-		btnForgottenPss.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		btnForgottenPss.setBackground(new Color(0,0,0,220));
-		btnForgottenPss.setForeground(Color.WHITE);
-		btnForgottenPss.setBounds(35, 302, 208, 23);
-		datosPanelLogin.add(btnForgottenPss);
-		btnForgottenPss.setBorder(null);
-		
-		btnRegistrarse = new JButton("<HTML>¿No tienes una cuenta? <U>Registrate ahora!</U></HTML>");
-		btnRegistrarse.setHorizontalAlignment(SwingConstants.LEFT);
-		btnRegistrarse.setForeground(Color.WHITE);
-		btnRegistrarse.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		btnRegistrarse.setBorder(null);
-		btnRegistrarse.setBackground(new Color(0, 0, 0, 220));
-		btnRegistrarse.setBounds(35, 280, 208, 23);
-		datosPanelLogin.add(btnRegistrarse);
-	
-		
-	//CIERRE PANEL LOGIN
-		
-	// PANEL REGIST
-		datosPanelRegist = new JPanel();
-		datosPanelRegist.setBackground(Color.BLACK);
-		datosPanelRegist.setBounds(157, 94, 301, 375);
-		basePanel.add(datosPanelRegist);
-		datosPanelRegist.setBackground(new Color(0,0,0,220));
-		datosPanelRegist.setLayout(null);
-		
-		lblRegistrarse = new JLabel("Registrarse");
-		lblRegistrarse.setFont(new Font("Trebuchet MS", Font.BOLD, 25));
-		lblRegistrarse.setForeground(Color.WHITE);
-		lblRegistrarse.setBounds(35, 23, 182, 45);
-		datosPanelRegist.add(lblRegistrarse);
-		
-		txfEmailRegist = new JTextField();
-		txfEmailRegist.setText("  Email");
-		txfEmailRegist.setForeground(new Color(128, 140, 140));
-		txfEmailRegist.setFont(new Font("Arial", Font.PLAIN, 12));
-		txfEmailRegist.setColumns(10);
-		txfEmailRegist.setBorder(null);
-		txfEmailRegist.setBackground(new Color(51, 51, 51));
-		txfEmailRegist.setBounds(35, 127, 228, 45);
-		datosPanelRegist.add(txfEmailRegist);
-		
-		txfName = new JTextField();
-		txfName.setText("  Nombre");
-		txfName.setForeground(new Color(128, 140, 140));
-		txfName.setFont(new Font("Arial", Font.PLAIN, 12));
-		txfName.setColumns(10);
-		txfName.setBorder(null);
-		txfName.setBackground(new Color(51, 51, 51));
-		txfName.setBounds(35, 71, 228, 45);
-		datosPanelRegist.add(txfName);
-		
-		pwPassword1 = new JPasswordField();
-		pwPassword1.setForeground(new Color(128, 140, 140));
-		pwPassword1.setBorder(null);
-		pwPassword1.setBackground(new Color(51, 51, 51));
-		pwPassword1.setBounds(35, 183, 228, 45);
-		datosPanelRegist.add(pwPassword1);
-		
-		pwPassword2 = new JPasswordField();
-		pwPassword2.setForeground(new Color(128, 140, 140));
-		pwPassword2.setBorder(null);
-		pwPassword2.setBackground(new Color(51, 51, 51));
-		pwPassword2.setBounds(35, 239, 228, 45);
-		datosPanelRegist.add(pwPassword2);
-		
-		btnEnviar = new JButton("Enviar");
-		btnEnviar.setForeground(Color.WHITE);
-		btnEnviar.setFont(new Font("Trebuchet MS", Font.BOLD, 17));
-		btnEnviar.setBorder(null);
-		btnEnviar.setBackground(new Color(229, 9, 20));
-		btnEnviar.setBounds(35, 305, 228, 45);
-		datosPanelRegist.add(btnEnviar);
-		
-		btnVolver = new JButton("Volver");
-		btnVolver.setForeground(Color.WHITE);
-		btnVolver.setFont(new Font("Tahoma", Font.BOLD, 11));
-		btnVolver.setIcon(new ImageIcon("D:/DAM1/PROG/Netflix/assets/nada.PNG"));
-		btnVolver.setBackground(new Color(0,0,0));
-		btnVolver.setHorizontalAlignment(SwingConstants.RIGHT);
-		btnVolver.setBorder(null);
-		btnVolver.setBounds(241, 11, 50, 23);
-		datosPanelRegist.add(btnVolver);
-		
-	// CIERRE PANEL REGIST
-		
-	// PANEL CODIGO
-		
-		datosPanelCodigo = new JPanel();
-		datosPanelCodigo.setBackground(Color.BLACK);
-		datosPanelCodigo.setBounds(157, 94, 301, 375);
-		basePanel.add(datosPanelCodigo);
-		datosPanelCodigo.setBackground(new Color(0,0,0,220));
-		datosPanelCodigo.setLayout(null);
-		
-		lblVerifiacion = new JLabel("Verificación");
-		lblVerifiacion.setFont(new Font("Trebuchet MS", Font.BOLD, 25));
-		lblVerifiacion.setForeground(Color.WHITE);
-		lblVerifiacion.setBounds(35, 23, 182, 45);
-		datosPanelCodigo.add(lblVerifiacion);
-		
-		txfCod1 = new JTextField(1);
-		txfCod1.setHorizontalAlignment(SwingConstants.CENTER);
-		txfCod1.setFont(new Font("Verdana", Font.BOLD, 18));
-		txfCod1.setBounds(45, 203, 45, 45);
-		txfCod1.setBorder(null);
-		txfCod1.setColumns(10);
-		txfCod1.setDocument(new JTextFieldLimit(1));
-		datosPanelCodigo.add(txfCod1);
-
-		txfCod2 = new JTextField();
-		txfCod2.setHorizontalAlignment(SwingConstants.CENTER);
-		txfCod2.setFont(new Font("Verdana", Font.BOLD, 18));
-		txfCod2.setColumns(10);
-		txfCod2.setBounds(100, 203, 45, 45);
-		txfCod2.setBorder(null);
-		txfCod2.setDocument(new JTextFieldLimit(1));
-		datosPanelCodigo.add(txfCod2);
-		
-		txfCod3 = new JTextField();
-		txfCod3.setHorizontalAlignment(SwingConstants.CENTER);
-		txfCod3.setFont(new Font("Verdana", Font.BOLD, 18));
-		txfCod3.setColumns(10);
-		txfCod3.setBounds(155, 203, 45, 45);
-		txfCod3.setBorder(null);
-		txfCod3.setDocument(new JTextFieldLimit(1));
-		datosPanelCodigo.add(txfCod3);
-		
-		txfCod4 = new JTextField();
-		txfCod4.setHorizontalAlignment(SwingConstants.CENTER);
-		txfCod4.setFont(new Font("Verdana", Font.BOLD, 18));
-		txfCod4.setColumns(10);
-		txfCod4.setBounds(210, 203, 45, 45);
-		txfCod4.setBorder(null);
-		txfCod4.setDocument(new JTextFieldLimit(1));
-		datosPanelCodigo.add(txfCod4);
-		
-		lblCodInfo2 = new JLabel("<HTML>Hemos enviado un <U>NUEVO</U> c\u00F3digo de verificaci\u00F3n a tu email."
-								+" Revisa tu bandeja de entrada y la carpeta de spam.</HTML>");
-		lblCodInfo2.setForeground(Color.WHITE);
-		lblCodInfo2.setBounds(35, 92, 245, 60);
-		datosPanelCodigo.add(lblCodInfo2);
-		
-		lblCodInfo1 = new JLabel("Tu cuenta a\u00FAn no est\u00E1 verificada.");
-		lblCodInfo1.setForeground(Color.WHITE);
-		lblCodInfo1.setBounds(35, 62, 220, 22);
-		datosPanelCodigo.add(lblCodInfo1);
-		
-		lblCodInfo3 = new JLabel("Inserta el c\u00F3digo aqu\u00ED:");
-		lblCodInfo3.setForeground(Color.WHITE);
-		lblCodInfo3.setBounds(35, 181, 220, 22);
-		datosPanelCodigo.add(lblCodInfo3);
-		
-		btnVerificar = new JButton("Verificar");
-		btnVerificar.setForeground(Color.WHITE);
-		btnVerificar.setFont(new Font("Trebuchet MS", Font.BOLD, 17));
-		btnVerificar.setBorder(null);
-		btnVerificar.setBackground(new Color(229, 9, 20));
-		btnVerificar.setBounds(35, 290, 228, 45);
-		datosPanelCodigo.add(btnVerificar);
-		
-	// CIERRE PANEL CODIGO
+		setUIPanelLogin();
+		setUIPanelRegist();
+		setUIPanelVerify();
 	
 		imgFondo = new JLabel("");
 		imgFondo.setBounds(0, -28, 767, 619);
@@ -306,6 +99,210 @@ public class LoginView {
 		frmLogin.setVisible(true);
 		changeVisibility(1);
 	}
+	
+	private void setUIPanelLogin() {
+		panelLogin = new JPanel();
+		panelLogin.setBackground(Color.BLACK);
+		panelLogin.setBounds(157, 94, 301, 375);
+		basePanel.add(panelLogin);
+		panelLogin.setBackground(new Color(0,0,0,220));
+		panelLogin.setLayout(null);
+		
+		lblIniciarSesion = new JLabel("Iniciar sesi\u00F3n");
+		lblIniciarSesion.setFont(new Font("Trebuchet MS", Font.BOLD, 25));
+		lblIniciarSesion.setForeground(Color.WHITE);
+		lblIniciarSesion.setBounds(35, 23, 182, 45);
+		panelLogin.add(lblIniciarSesion);
+		
+		txfEmailLogin = new JTextField();
+		txfEmailLogin.setForeground(new Color(128, 140, 140));
+		txfEmailLogin.setFont(new Font("Arial", Font.PLAIN, 12));
+		txfEmailLogin.setText("  Email");
+		txfEmailLogin.setBackground(new Color(51,51,51));
+		txfEmailLogin.setBounds(35, 87, 228, 45);
+		panelLogin.add(txfEmailLogin);
+		txfEmailLogin.setColumns(10);
+		txfEmailLogin.setBorder(null);
+		
+		pwPassLogin = new JPasswordField();
+		pwPassLogin.setForeground(new Color(128, 140, 140));
+		pwPassLogin.setBackground(new Color(51,51,51));
+		pwPassLogin.setBounds(35, 143, 228, 45);
+		panelLogin.add(pwPassLogin);
+		pwPassLogin.setBorder(null);
+		
+		btnIniciarSesion = new JButton("Iniciar sesi\u00F3n");
+
+		btnIniciarSesion.setFont(new Font("Trebuchet MS", Font.BOLD, 17));
+		btnIniciarSesion.setBackground(new Color(229, 9, 20));
+		btnIniciarSesion.setForeground(Color.WHITE);
+		btnIniciarSesion.setBounds(35, 224, 228, 45);
+		panelLogin.add(btnIniciarSesion);
+		btnIniciarSesion.setBorder(null);
+		
+		btnForgottenPss = new JButton("<HTML>¿Contraseña Olvidada? <U>Recuperala aquí</U></HTML>");
+		btnForgottenPss.setHorizontalAlignment(SwingConstants.LEFT);
+		btnForgottenPss.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		btnForgottenPss.setBackground(new Color(0,0,0,220));
+		btnForgottenPss.setForeground(Color.WHITE);
+		btnForgottenPss.setBounds(35, 302, 208, 23);
+		panelLogin.add(btnForgottenPss);
+		btnForgottenPss.setBorder(null);
+		
+		btnRegistrarse = new JButton("<HTML>¿No tienes una cuenta? <U>Registrate ahora!</U></HTML>");
+		btnRegistrarse.setHorizontalAlignment(SwingConstants.LEFT);
+		btnRegistrarse.setForeground(Color.WHITE);
+		btnRegistrarse.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		btnRegistrarse.setBorder(null);
+		btnRegistrarse.setBackground(new Color(0, 0, 0, 220));
+		btnRegistrarse.setBounds(35, 280, 208, 23);
+		panelLogin.add(btnRegistrarse);
+	}
+	
+	
+	private void setUIPanelRegist() {
+		panelRegist = new JPanel();
+		panelRegist.setBackground(Color.BLACK);
+		panelRegist.setBounds(157, 94, 301, 375);
+		basePanel.add(panelRegist);
+		panelRegist.setBackground(new Color(0,0,0,220));
+		panelRegist.setLayout(null);
+		
+		lblRegistrarse = new JLabel("Registrarse");
+		lblRegistrarse.setFont(new Font("Trebuchet MS", Font.BOLD, 25));
+		lblRegistrarse.setForeground(Color.WHITE);
+		lblRegistrarse.setBounds(35, 23, 182, 45);
+		panelRegist.add(lblRegistrarse);
+		
+		txfEmailRegist = new JTextField();
+		txfEmailRegist.setText("  Email");
+		txfEmailRegist.setForeground(new Color(128, 140, 140));
+		txfEmailRegist.setFont(new Font("Arial", Font.PLAIN, 12));
+		txfEmailRegist.setColumns(10);
+		txfEmailRegist.setBorder(null);
+		txfEmailRegist.setBackground(new Color(51, 51, 51));
+		txfEmailRegist.setBounds(35, 127, 228, 45);
+		panelRegist.add(txfEmailRegist);
+		
+		txfName = new JTextField();
+		txfName.setText("  Nombre");
+		txfName.setForeground(new Color(128, 140, 140));
+		txfName.setFont(new Font("Arial", Font.PLAIN, 12));
+		txfName.setColumns(10);
+		txfName.setBorder(null);
+		txfName.setBackground(new Color(51, 51, 51));
+		txfName.setBounds(35, 71, 228, 45);
+		panelRegist.add(txfName);
+		
+		pwPassword1 = new JPasswordField();
+		pwPassword1.setForeground(new Color(128, 140, 140));
+		pwPassword1.setBorder(null);
+		pwPassword1.setBackground(new Color(51, 51, 51));
+		pwPassword1.setBounds(35, 183, 228, 45);
+		panelRegist.add(pwPassword1);
+		
+		pwPassword2 = new JPasswordField();
+		pwPassword2.setForeground(new Color(128, 140, 140));
+		pwPassword2.setBorder(null);
+		pwPassword2.setBackground(new Color(51, 51, 51));
+		pwPassword2.setBounds(35, 239, 228, 45);
+		panelRegist.add(pwPassword2);
+		
+		btnEnviar = new JButton("Enviar");
+		btnEnviar.setForeground(Color.WHITE);
+		btnEnviar.setFont(new Font("Trebuchet MS", Font.BOLD, 17));
+		btnEnviar.setBorder(null);
+		btnEnviar.setBackground(new Color(229, 9, 20));
+		btnEnviar.setBounds(35, 305, 228, 45);
+		panelRegist.add(btnEnviar);
+		
+		btnVolver = new JButton("Volver");
+		btnVolver.setForeground(Color.WHITE);
+		btnVolver.setFont(new Font("Tahoma", Font.BOLD, 11));
+		btnVolver.setIcon(new ImageIcon("D:/DAM1/PROG/Netflix/assets/nada.PNG"));
+		btnVolver.setBackground(new Color(0,0,0));
+		btnVolver.setHorizontalAlignment(SwingConstants.RIGHT);
+		btnVolver.setBorder(null);
+		btnVolver.setBounds(241, 11, 50, 23);
+		panelRegist.add(btnVolver);
+	}
+	
+	
+	private void setUIPanelVerify() {
+		panelVerify = new JPanel();
+		panelVerify.setBackground(Color.BLACK);
+		panelVerify.setBounds(157, 94, 301, 375);
+		basePanel.add(panelVerify);
+		panelVerify.setBackground(new Color(0,0,0,220));
+		panelVerify.setLayout(null);
+		
+		lblVerifiacion = new JLabel("Verificación");
+		lblVerifiacion.setFont(new Font("Trebuchet MS", Font.BOLD, 25));
+		lblVerifiacion.setForeground(Color.WHITE);
+		lblVerifiacion.setBounds(35, 23, 182, 45);
+		panelVerify.add(lblVerifiacion);
+		
+		txfCod1 = new JTextField(1);
+		txfCod1.setHorizontalAlignment(SwingConstants.CENTER);
+		txfCod1.setFont(new Font("Verdana", Font.BOLD, 18));
+		txfCod1.setBounds(45, 203, 45, 45);
+		txfCod1.setBorder(null);
+		txfCod1.setColumns(10);
+		txfCod1.setDocument(new JTextFieldLimit(1));
+		panelVerify.add(txfCod1);
+
+		txfCod2 = new JTextField();
+		txfCod2.setHorizontalAlignment(SwingConstants.CENTER);
+		txfCod2.setFont(new Font("Verdana", Font.BOLD, 18));
+		txfCod2.setColumns(10);
+		txfCod2.setBounds(100, 203, 45, 45);
+		txfCod2.setBorder(null);
+		txfCod2.setDocument(new JTextFieldLimit(1));
+		panelVerify.add(txfCod2);
+		
+		txfCod3 = new JTextField();
+		txfCod3.setHorizontalAlignment(SwingConstants.CENTER);
+		txfCod3.setFont(new Font("Verdana", Font.BOLD, 18));
+		txfCod3.setColumns(10);
+		txfCod3.setBounds(155, 203, 45, 45);
+		txfCod3.setBorder(null);
+		txfCod3.setDocument(new JTextFieldLimit(1));
+		panelVerify.add(txfCod3);
+		
+		txfCod4 = new JTextField();
+		txfCod4.setHorizontalAlignment(SwingConstants.CENTER);
+		txfCod4.setFont(new Font("Verdana", Font.BOLD, 18));
+		txfCod4.setColumns(10);
+		txfCod4.setBounds(210, 203, 45, 45);
+		txfCod4.setBorder(null);
+		txfCod4.setDocument(new JTextFieldLimit(1));
+		panelVerify.add(txfCod4);
+		
+		lblCodInfo2 = new JLabel("<HTML>Hemos enviado un <U>NUEVO</U> c\u00F3digo de verificaci\u00F3n a tu email."
+								+" Revisa tu bandeja de entrada y la carpeta de spam.</HTML>");
+		lblCodInfo2.setForeground(Color.WHITE);
+		lblCodInfo2.setBounds(35, 92, 245, 60);
+		panelVerify.add(lblCodInfo2);
+		
+		lblCodInfo1 = new JLabel("Tu cuenta a\u00FAn no est\u00E1 verificada.");
+		lblCodInfo1.setForeground(Color.WHITE);
+		lblCodInfo1.setBounds(35, 62, 220, 22);
+		panelVerify.add(lblCodInfo1);
+		
+		lblCodInfo3 = new JLabel("Inserta el c\u00F3digo aqu\u00ED:");
+		lblCodInfo3.setForeground(Color.WHITE);
+		lblCodInfo3.setBounds(35, 181, 220, 22);
+		panelVerify.add(lblCodInfo3);
+		
+		btnVerificar = new JButton("Verificar");
+		btnVerificar.setForeground(Color.WHITE);
+		btnVerificar.setFont(new Font("Trebuchet MS", Font.BOLD, 17));
+		btnVerificar.setBorder(null);
+		btnVerificar.setBackground(new Color(229, 9, 20));
+		btnVerificar.setBounds(35, 290, 228, 45);
+		panelVerify.add(btnVerificar);
+	}
+	
 	
 	private void setListeners() {
 		btnIniciarSesion.addActionListener(new ActionListener() {
@@ -343,49 +340,47 @@ public class LoginView {
 				deleteLetters();
 				if(checkVerification(emailVerificacion)) {
 					uDAO.validateCode(emailVerificacion);
-					new NetflixView();
+					new	NetflixView();
 					frmLogin.dispose();
 				}
+			}
+		});
+		
+		btnForgottenPss.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new ForgotPssView(frmLogin);
+				frmLogin.setVisible(false);
 			}
 		});
 
 	}
 	
 	
-	/**
-	 * 
-	 */
 	public void changeVisibility (int modo) {
 		switch (modo) {
 			case 1:
-				datosPanelLogin.setVisible(true);
-				datosPanelRegist.setVisible(false);
-				datosPanelCodigo.setVisible(false);
+				panelLogin.setVisible(true);
+				panelRegist.setVisible(false);
+				panelVerify.setVisible(false);
 				break;
 			case 2:
-				datosPanelLogin.setVisible(false);
-				datosPanelRegist.setVisible(true);
-				datosPanelCodigo.setVisible(false);
+				panelLogin.setVisible(false);
+				panelRegist.setVisible(true);
+				panelVerify.setVisible(false);
 				break;
 			case 3:
-				datosPanelLogin.setVisible(false);
-				datosPanelRegist.setVisible(false);
-				datosPanelCodigo.setVisible(true);
+				panelLogin.setVisible(false);
+				panelRegist.setVisible(false);
+				panelVerify.setVisible(true);
 				break;
 			default:
-				datosPanelLogin.setVisible(true);
-				datosPanelRegist.setVisible(false);
-				datosPanelCodigo.setVisible(false);
+				panelLogin.setVisible(true);
+				panelRegist.setVisible(false);
+				panelVerify.setVisible(false);
 		}
 	}
 
-	/**
-	 * 
-	 * @param email
-	 * @param pw1
-	 * @param pw2
-	 * @return
-	 */
+	
 	public boolean registroValido(String email, String pw1, String pw2) {
 		if(checkVaciosRegist()) {
 			JOptionPane.showMessageDialog(btnEnviar, "ERR0R! -  Rellena todos los campos");
@@ -403,11 +398,7 @@ public class LoginView {
 		return true;
 	}
 	
-	/**
-	 * 
-	 * @param email
-	 * @return
-	 */
+	
     public boolean emailValido (String email) {
     	final String regex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
                 
@@ -417,12 +408,7 @@ public class LoginView {
         return pat.matcher(email).matches();
     }
     
-    /**
-     * 
-     * @param pw1
-     * @param pw2
-     * @return
-     */
+
     public boolean passwordMatch(String pw1, String pw2) {
     	if(pw1 != null && pw2 != null)
     		if(pw1.equals(pw2))
@@ -431,10 +417,6 @@ public class LoginView {
     	
     }
     
-    /**
-     * 
-     * @return
-     */
     public boolean checkVaciosRegist () {
     	
 		final String passwd1 = new String (pwPassword1.getPassword());
@@ -445,12 +427,6 @@ public class LoginView {
     	return false;
     }
     
-    /**
-     * 
-     * @param passwordToHash
-     * @param salt
-     * @return
-     */
     public String hashPassword(String passwordToHash, String salt){
         String generatedPassword = null;
         try {
@@ -468,9 +444,6 @@ public class LoginView {
         return generatedPassword;
     }
     
-    /**
-     * 
-     */
     public void registrarEnBD(String name, String email, String password) {
     	String pwHashed = hashPassword(password, "abc123");
     	int codigo = generateValidationCode();

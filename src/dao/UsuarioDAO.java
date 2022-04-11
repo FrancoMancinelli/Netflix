@@ -32,7 +32,7 @@ public class UsuarioDAO extends AbstractDAO {
 	 * @param usuario Usuario a insertar
 	 */
 	public void registro(Usuario usuario) {
-		final String INSERT = "INSERT INTO netflix.usuarios (name, email, password, codigo_verificacion)"
+		final String INSERT = "INSERT INTO netflix.usuarios (name, email, password, codigo)"
 							+ " VALUES ('"+ usuario.getName() 
 							+ "', '"+ usuario.getEmail() 
 							+ "', '" + usuario.getPassword() 
@@ -48,7 +48,7 @@ public class UsuarioDAO extends AbstractDAO {
 	public void changeCode(String email, int code) {
 		final String UPDATE = "UPDATE netflix.usuarios\r\n"
 				+ "SET\r\n"
-				+ "codigo_verificacion = '"+code+"'\r\n"
+				+ "codigo = '"+code+"'\r\n"
 				+ "WHERE email = '"+email+"';";
 		try {
 			stmt.executeUpdate(UPDATE);
@@ -58,13 +58,13 @@ public class UsuarioDAO extends AbstractDAO {
 	}
 	
 	public int getCode(String email) {
-		final String QUERY = "SELECT codigo_verificacion FROM usuarios WHERE email = '"+email+"'";
+		final String QUERY = "SELECT codigo FROM usuarios WHERE email = '"+email+"'";
 
 		try { 
 		         ResultSet rs = stmt.executeQuery(QUERY);		      
 		         while(rs.next()){
 		        	 //Display Values
-		           return rs.getInt("codigo_verificacion");
+		           return rs.getInt("codigo");
 		         }
 		      } catch (SQLException e) {
 		         e.printStackTrace();

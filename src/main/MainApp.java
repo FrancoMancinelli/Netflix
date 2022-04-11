@@ -17,12 +17,14 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 
 import models.Show;
+import ui.ForgotPssView;
 import ui.LoginView;
 
 public class MainApp {
 
 	public static void main(String[] args) {
 
+		//new ForgotPssView();
 		new LoginView();
 		ejecutar_sonido("D:\\DAM1\\PROG\\Netflix\\assets\\tutumsound.wav");
 
