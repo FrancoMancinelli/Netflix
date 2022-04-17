@@ -99,6 +99,21 @@ public class UsuarioDAO extends AbstractDAO {
 		return 0; 
 	}
 	
+	public String getUsername(String email) {
+		final String QUERY = "SELECT name FROM netflix.usuarios WHERE email = '"+email+"'";
+
+		try { 
+		         ResultSet rs = stmt.executeQuery(QUERY);		      
+		         while(rs.next()){
+		        	 //Display Values
+		           return rs.getString("name");
+		         }
+		      } catch (SQLException e) {
+		         e.printStackTrace();
+		      }
+		return null; 
+	}
+	
 	public boolean emailExist(String email) {
 		final String QUERY = "SELECT email FROM usuarios "+
 							"WHERE email = '" + email + "'";

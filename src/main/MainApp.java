@@ -16,25 +16,27 @@ import javax.mail.internet.MimeMessage;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 
+import dao.ShowDAO;
 import models.Show;
-import ui.ForgotPssView;
 import ui.LoginView;
+import ui.NetflixView;
 
 public class MainApp {
 
 	public static void main(String[] args) {
 
-		//new ForgotPssView();
+//		new NetflixView();
 		new LoginView();
-		ejecutar_sonido("D:\\DAM1\\PROG\\Netflix\\assets\\tutumsound.wav");
+//		ejecutar_sonido("D:\\DAM1\\PROG\\Netflix\\assets\\tutumsound.wav");
 
-//		LeerFichero();
+//		insertarFicheroBD();
 
 //		SendEmail("manchiwolf312@gmail.com");
 	}
 
-	public static void LeerFichero() {
-		String filename = "D:\\DAM1\\PROG\\Netflix\\assets\\netflix_titles.csv";
+	public static void insertarFicheroBD() {
+		ShowDAO bd = new ShowDAO();
+		String filename = "netflix_titles.csv";
 		Scanner sc = null;
 		ArrayList<Show> shows = new ArrayList<Show>();
 		boolean isString = false;
@@ -72,7 +74,15 @@ public class MainApp {
 					else
 						trozoString += trozo + ",";		
 				}
+				
+				for (int i = 0; i < trozos.length; i++) {
+					trozos[i] = trozos[i].replace("\"", "");
+					trozos[i] = trozos[i].replace("'", "´");
+				}
+				
 				shows.add(new Show(trozos[0],trozos[1],trozos[2],trozos[3],trozos[4],trozos[5],
+				trozos[6],trozos[7],trozos[8],trozos[9],trozos[10],trozos[11]));
+				bd.insert(new Show(trozos[0],trozos[1],trozos[2],trozos[3],trozos[4],trozos[5],
 				trozos[6],trozos[7],trozos[8],trozos[9],trozos[10],trozos[11]));
 				fila++;
 				System.out.println(shows.get(fila-1));
@@ -83,8 +93,6 @@ public class MainApp {
 		}
 		sc.close();		
 		System.out.println("\n"+shows.size());		
-		System.out.println(shows.get(4361));
-		System.out.println(shows.get(7549));
 	}
 	
 	public static void SendEmail(String receptor) {
@@ -138,5 +146,7 @@ public class MainApp {
 		}
 	}	
 
+	
+	
 }
 

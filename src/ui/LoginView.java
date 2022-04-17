@@ -60,6 +60,7 @@ public class LoginView {
 	
 	private UsuarioDAO uDAO;
 	private String emailVerificacion;
+	private String username;
 	
 
 	/**
@@ -117,7 +118,7 @@ public class LoginView {
 		txfEmailLogin = new JTextField();
 		txfEmailLogin.setForeground(new Color(128, 140, 140));
 		txfEmailLogin.setFont(new Font("Arial", Font.PLAIN, 12));
-		txfEmailLogin.setText("  Email");
+		txfEmailLogin.setText("jojo@gmail.com");
 		txfEmailLogin.setBackground(new Color(51,51,51));
 		txfEmailLogin.setBounds(35, 87, 228, 45);
 		panelLogin.add(txfEmailLogin);
@@ -175,7 +176,7 @@ public class LoginView {
 		panelRegist.add(lblRegistrarse);
 		
 		txfEmailRegist = new JTextField();
-		txfEmailRegist.setText("  Email");
+		txfEmailRegist.setText("");
 		txfEmailRegist.setForeground(new Color(128, 140, 140));
 		txfEmailRegist.setFont(new Font("Arial", Font.PLAIN, 12));
 		txfEmailRegist.setColumns(10);
@@ -308,8 +309,9 @@ public class LoginView {
 		btnIniciarSesion.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 				if(loginValido()) {
-					new NetflixView();
-					frmLogin.dispose();
+					username = uDAO.getUsername(txfEmailLogin.getText());
+					new NetflixView(frmLogin, username);
+					frmLogin.setVisible(false);
 				}
 			}
 		});
@@ -340,8 +342,9 @@ public class LoginView {
 				deleteLetters();
 				if(checkVerification(emailVerificacion)) {
 					uDAO.validateCode(emailVerificacion);
-					new	NetflixView();
-					frmLogin.dispose();
+					username = uDAO.getUsername(emailVerificacion);
+					new NetflixView(frmLogin, username);
+					frmLogin.setVisible(false);
 				}
 			}
 		});
