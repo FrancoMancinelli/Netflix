@@ -9,7 +9,7 @@ import java.sql.Statement;
 public abstract class AbstractDAO {
 	protected final String DB_URL = "jdbc:mysql://localhost/netflix";
 	protected final String USER = "root";
-	protected final String PASS = "sasha125";
+	protected final String PASS = "root";
 	
 	protected Connection conn;
 	protected Statement stmt;
