@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.regex.Pattern;
 
 import javax.swing.ImageIcon;
@@ -139,7 +141,7 @@ public class LoginView {
 		txfEmailLogin = new JTextField();
 		txfEmailLogin.setForeground(new Color(128, 140, 140));
 		txfEmailLogin.setFont(new Font("Arial", Font.PLAIN, 13));
-		txfEmailLogin.setText("a@gmail.com");
+		txfEmailLogin.setText("");
 		txfEmailLogin.setBackground(new Color(51,51,51));
 		txfEmailLogin.setBounds(35, 87, 228, 45);
 		panelLogin.add(txfEmailLogin);
@@ -345,7 +347,7 @@ public class LoginView {
 		lblCodInfo2 = new JLabel("<HTML>Hemos enviado un <U>NUEVO</U> c\u00F3digo de verificaci\u00F3n a tu email."
 								+" Revisa tu bandeja de entrada y la carpeta de spam.</HTML>");
 		lblCodInfo2.setForeground(Color.WHITE);
-		lblCodInfo2.setBounds(35, 92, 245, 60);
+		lblCodInfo2.setBounds(35, 92, 245, 78);
 		panelVerify.add(lblCodInfo2);
 		
 		lblCodInfo1 = new JLabel("Tu cuenta a\u00FAn no est\u00E1 verificada.");
@@ -373,11 +375,7 @@ public class LoginView {
 	private void setListeners() {
 		btnIniciarSesion.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
-				if(loginValido()) {
-					username = uDAO.getUsername(txfEmailLogin.getText());
-					new NetflixView(frmLogin, username);
-					frmLogin.setVisible(false);
-				}
+				realizarLogin();
 			}
 		});
 				
@@ -395,21 +393,13 @@ public class LoginView {
 
 		btnEnviar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(registroValido(txfEmailRegist.getText(), new String (pwPassword1.getPassword()), new String (pwPassword2.getPassword()))) {
-					registrarEnBD(txfName.getText(), txfEmailRegist.getText(), new String (pwPassword1.getPassword()));
-					changeVisibility(3);
-				}
+				realizarRegistro();
 			}
 		});
 			
 		btnVerificar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(checkVerification(emailVerificacion)) {
-					uDAO.validateCode(emailVerificacion);
-					username = uDAO.getUsername(emailVerificacion);
-					new NetflixView(frmLogin, username);
-					frmLogin.setVisible(false);
-				}
+				
 			}
 		});
 		
@@ -419,7 +409,95 @@ public class LoginView {
 				frmLogin.setVisible(false);
 			}
 		});
+		
+		pwPassLogin.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_ENTER)
+					realizarLogin();
+				}
+		});
+		
+		pwPassword2.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_ENTER)
+					realizarRegistro();
+				}
+		});
+		
+		txfCod1.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() != KeyEvent.VK_BACK_SPACE) {
+					if(!txfCod1.getText().isEmpty())
+						txfCod2.requestFocus();
+				}
+			}
+		});
+		
+		txfCod2.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() != KeyEvent.VK_BACK_SPACE) {
+					if(!txfCod2.getText().isEmpty())
+						txfCod3.requestFocus();
+				}
+			}
+		});
+		
+		txfCod3.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() != KeyEvent.VK_BACK_SPACE) {
+					if(!txfCod3.getText().isEmpty())
+						txfCod4.requestFocus();
+				}
+			}
+		});
 
+		txfCod4.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_ENTER)
+					realizarVerificacion();
+			}
+		});
+
+	}
+	
+	/**
+	 * Realiza la logistica necesaria para logearse
+	 */
+	private void realizarLogin() {
+		if(loginValido()) {
+			username = uDAO.getUsername(txfEmailLogin.getText());
+			new NetflixView(frmLogin, username);
+			frmLogin.setVisible(false);
+		}
+	}
+	
+	/**
+	 * Realiza la logistica necesaria para realizar un registro
+	 */
+	private void realizarRegistro() {
+		if(registroValido(txfEmailRegist.getText(), new String (pwPassword1.getPassword()), new String (pwPassword2.getPassword()))) {
+			registrarEnBD(txfName.getText(), txfEmailRegist.getText(), new String (pwPassword1.getPassword()));
+			changeVisibility(3);
+		}
+	}
+	
+	/**
+	 * Realiza la logistica necesaria para validar un código
+	 */
+	private void realizarVerificacion() {
+		if(checkVerification(emailVerificacion)) {
+			uDAO.validateCode(emailVerificacion);
+			username = uDAO.getUsername(emailVerificacion);
+			new NetflixView(frmLogin, username);
+			frmLogin.setVisible(false);
+			changeVisibility(1);
+		}
 	}
 	
 	/**
@@ -442,6 +520,7 @@ public class LoginView {
 				panelLogin.setVisible(false);
 				panelRegist.setVisible(false);
 				panelVerify.setVisible(true);
+				txfCod1.requestFocus();
 				break;
 		}
 	}
@@ -557,14 +636,23 @@ public class LoginView {
      * De haberlo, lo eliminará y lo remplazará por un texto vacio.
      */
     public void onlyNumbers() {
-    	if (!txfCod1.getText().matches("[0-9]+"))
-    		txfCod1.setText("");
-    	if (!txfCod2.getText().matches("[0-9]+"))
-    		txfCod2.setText("");
-    	if (!txfCod3.getText().matches("[0-9]+"))
-    		txfCod3.setText("");
-    	if (!txfCod4.getText().matches("[0-9]+"))
-    		txfCod4.setText("");
+
+    	if (!txfCod4.getText().matches("[0-9]+")) {
+    		txfCod4.setText(""); 
+			txfCod4.requestFocus();
+    	}
+    	if (!txfCod3.getText().matches("[0-9]+")) {
+    		txfCod3.setText(""); 
+			txfCod3.requestFocus();
+    	}
+    	if (!txfCod2.getText().matches("[0-9]+")) {
+    		txfCod2.setText(""); 
+			txfCod2.requestFocus();
+    	}	
+    	if (!txfCod1.getText().matches("[0-9]+")) {
+    		txfCod1.setText(""); 
+			txfCod1.requestFocus();
+    	}
     }
     
     /**
@@ -594,6 +682,7 @@ public class LoginView {
     		txfCod3.setText("");
     		txfCod4.setText("");
 			JOptionPane.showMessageDialog(btnVerificar, "ERR0R! -  Código invalido, vuelve a intentarlo");
+			txfCod1.requestFocus();
 			return false;
     	}
     	return true;

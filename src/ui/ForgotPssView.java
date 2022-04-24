@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -44,7 +46,6 @@ public class ForgotPssView {
 	private JTextField txfCod3;
 	private JTextField txfCod4;
 	private JLabel lblCodInfo2;
-	private JLabel lblCodInfo1;
 	private JLabel lblCodInfo3;
 	
 	//Componentes Panel Password
@@ -220,16 +221,10 @@ public class ForgotPssView {
 		txfCod4.setDocument(new JTextFieldLimit(1));
 		panelVerify.add(txfCod4);
 		
-		lblCodInfo2 = new JLabel("<HTML>Hemos enviado un <U>NUEVO</U> c\u00F3digo de verificaci\u00F3n a tu email."
-								+" Revisa tu bandeja de entrada y la carpeta de spam.</HTML>");
+		lblCodInfo2 = new JLabel("<HTML>Para continuar es necesario comprobar que tienes acceso al email indicado."+"\n"+"Hemos enviado un <U>NUEVO</U> c\u00F3digo de verificaci\u00F3n a tu email. Revisa tu bandeja de entrada y la carpeta de spam.</HTML>");
 		lblCodInfo2.setForeground(Color.WHITE);
-		lblCodInfo2.setBounds(35, 110, 245, 60);
+		lblCodInfo2.setBounds(35, 65, 245, 105);
 		panelVerify.add(lblCodInfo2);
-		
-		lblCodInfo1 = new JLabel("<HTML>Para continuar es necesario comprobar que tienes acceso al email indicado.</HTML>");
-		lblCodInfo1.setForeground(Color.WHITE);
-		lblCodInfo1.setBounds(35, 75, 220, 33);
-		panelVerify.add(lblCodInfo1);
 		
 		lblCodInfo3 = new JLabel("Inserta el c\u00F3digo aqu\u00ED:");
 		lblCodInfo3.setForeground(Color.WHITE);
@@ -243,6 +238,8 @@ public class ForgotPssView {
 		btnVerificar.setBackground(new Color(229, 9, 20));
 		btnVerificar.setBounds(35, 290, 228, 45);
 		panelVerify.add(btnVerificar);
+		
+		
 	}
 
 	/**
@@ -336,6 +333,65 @@ public class ForgotPssView {
 				confirmChangePassword();
 			}
 		});
+		
+		txfCod1.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() != KeyEvent.VK_BACK_SPACE) {
+					if(!txfCod1.getText().isEmpty())
+						txfCod2.requestFocus();
+				}
+			}
+		});
+		
+		txfCod2.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() != KeyEvent.VK_BACK_SPACE) {
+					if(!txfCod2.getText().isEmpty())
+						txfCod3.requestFocus();
+				}
+			}
+		});
+		
+		txfCod3.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() != KeyEvent.VK_BACK_SPACE) {
+					if(!txfCod3.getText().isEmpty())
+						txfCod4.requestFocus();
+				}
+			}
+		});
+
+		txfCod4.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_ENTER)
+					if(checkVerification(txfEmail.getText())) {
+						changeVisibility(3);
+					}
+				}
+		});
+		
+		txfEmail.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+					if(checkValidEmail(txfEmail.getText())) 
+						generateNewVerificationCode();
+				}
+			}
+		});
+		
+		pwPassword2.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+					confirmChangePassword();
+				}
+			}
+		});
 	}
 	
 	/**
@@ -353,6 +409,7 @@ public class ForgotPssView {
 				panelEmail.setVisible(false);
 				panelPassword.setVisible(false);
 				panelVerify.setVisible(true);
+				txfCod1.requestFocus();
 				break;
 			case 3:
 				panelEmail.setVisible(false);
@@ -416,14 +473,23 @@ public class ForgotPssView {
      * De haberlo, lo eliminará y lo remplazará por un texto vacio.
      */
     public void onlyNumbers() {
-    	if (!txfCod1.getText().matches("[0-9]+"))
-    		txfCod1.setText("");
-    	if (!txfCod2.getText().matches("[0-9]+"))
-    		txfCod2.setText("");
-    	if (!txfCod3.getText().matches("[0-9]+"))
-    		txfCod3.setText("");
-    	if (!txfCod4.getText().matches("[0-9]+"))
-    		txfCod4.setText("");
+
+    	if (!txfCod4.getText().matches("[0-9]+")) {
+    		txfCod4.setText(""); 
+			txfCod4.requestFocus();
+    	}
+    	if (!txfCod3.getText().matches("[0-9]+")) {
+    		txfCod3.setText(""); 
+			txfCod3.requestFocus();
+    	}
+    	if (!txfCod2.getText().matches("[0-9]+")) {
+    		txfCod2.setText(""); 
+			txfCod2.requestFocus();
+    	}	
+    	if (!txfCod1.getText().matches("[0-9]+")) {
+    		txfCod1.setText(""); 
+			txfCod1.requestFocus();
+    	}
     }
     
     /**
@@ -453,6 +519,7 @@ public class ForgotPssView {
     		txfCod3.setText("");
     		txfCod4.setText("");
 			JOptionPane.showMessageDialog(btnVerificar, "ERR0R! -  Código invalido, vuelve a intentarlo");
+			txfCod1.requestFocus();					
 			return false;
     	}
     	return true;

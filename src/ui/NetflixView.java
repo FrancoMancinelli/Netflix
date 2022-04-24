@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -516,10 +518,7 @@ public class NetflixView {
 		
 		btnConfirmFileName.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(!txfFileName.getText().isEmpty()) 
-					checkFileExist(txfFileName.getText());
-				else 
-					JOptionPane.showMessageDialog(btnConfirmFileName, "ERR0R! -  Rellena el campo solicitado");
+				confirmFileName();
 			}
 		});
 		
@@ -538,26 +537,15 @@ public class NetflixView {
 				frmNetflix.dispose();
 			}
 		});
-	}
-	
-	private void mostrarFavoritos(String separador) {
-		try {
-			Scanner sc = new Scanner(new File(fileName), "UTF-8");
-			while (sc.hasNextLine()) {
-				String s = sc.nextLine();
-				var trozos = s.split(",|;|\t");
-				for (String t : trozos) {
-					
-					if (!arrShows.get(pagina).getShowID().equals(t)) {
-						arrFavs.add(t);
-					}
+		
+		txfFileName.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+					confirmFileName();
 				}
 			}
-			addFavToFile(arrFavs, separador);
-			sc.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
+		});
 	}
 	
 	/**
@@ -612,6 +600,17 @@ public class NetflixView {
 	 */
 	private boolean buscadorVacio() {
 		return txfTextoABuscar.getText().isEmpty();
+	}
+	
+	/**
+	 * Comprueba que la caja de texto para indicar el nombre del fichero no este vacia
+	 * Además comprueba si existe y lo creará o no según corresponda
+	 */
+	private void confirmFileName() {
+		if(!txfFileName.getText().isEmpty()) 
+			checkFileExist(txfFileName.getText());
+		else 
+			JOptionPane.showMessageDialog(btnConfirmFileName, "ERR0R! -  Rellena el campo solicitado");
 	}
 	
 	/**
