@@ -77,7 +77,6 @@ public class NetflixView {
 	private JButton btnCancelSearch;
 	private JLabel imgProfilePic2;
 	private JLabel lblUserName2;
-	private JButton btnVerFavs;
 
 	
 	//Panel Fichero
@@ -452,21 +451,15 @@ public class NetflixView {
 		panelNetflix.add(lblUserName);
 		
 		btnBuscar = new JButton("Buscar");
-		btnBuscar.setBounds(237, 372, 145, 33);
+		btnBuscar.setBounds(373, 372, 145, 33);
 		btnBuscar.setBackground(Color.WHITE);
 		panelNetflix.add(btnBuscar);
 		
 		btnSalir = new JButton("Salir");
 		btnSalir.setBackground(Color.WHITE);
 		btnSalir.setForeground(Color.BLACK);
-		btnSalir.setBounds(25, 372, 145, 33);
+		btnSalir.setBounds(107, 372, 145, 33);
 		panelNetflix.add(btnSalir);
-		
-		btnVerFavs = new JButton("Ver Favoritos");
-		btnVerFavs.setForeground(Color.BLACK);
-		btnVerFavs.setBackground(Color.WHITE);
-		btnVerFavs.setBounds(461, 372, 145, 33);
-		panelNetflix.add(btnVerFavs);
 	}
 	
 	/**
@@ -545,12 +538,26 @@ public class NetflixView {
 				frmNetflix.dispose();
 			}
 		});
-		
-		btnVerFavs.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
+	}
+	
+	private void mostrarFavoritos(String separador) {
+		try {
+			Scanner sc = new Scanner(new File(fileName), "UTF-8");
+			while (sc.hasNextLine()) {
+				String s = sc.nextLine();
+				var trozos = s.split(",|;|\t");
+				for (String t : trozos) {
+					
+					if (!arrShows.get(pagina).getShowID().equals(t)) {
+						arrFavs.add(t);
+					}
+				}
 			}
-		});
+			addFavToFile(arrFavs, separador);
+			sc.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	/**
