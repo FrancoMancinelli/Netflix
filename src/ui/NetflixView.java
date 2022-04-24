@@ -93,8 +93,9 @@ public class NetflixView {
 	private JLabel lblInfoCrear;
 	private JPanel panelSeparador;
 	private JRadioButton rdbtnEmpty;
+	
 	/**
-	 * Create the application.
+	 * Crea la aplicación
 	 */
 	public NetflixView(JFrame login, String username) {
 		this.username = username;
@@ -105,13 +106,16 @@ public class NetflixView {
 	}
 
 	/**
-	 * Initialize the contents of the frame.
+	 * Inicializa el Frame
 	 */
 	private void initialize() {
 		setUIComponents();
 		setListeners();
 	}
-
+	
+	/**
+	 * Construye los diferentes componentes generales del Frame
+	 */
 	public void setUIComponents() {
 		frmNetflix = new JFrame();
 		frmNetflix.getContentPane().setBackground(Color.GREEN);
@@ -122,13 +126,16 @@ public class NetflixView {
 
 		setPanelNetflix();
 		setPanelBuscar();
-		setPanelGuardar();
+		setPanelFichero();
 		
 		changeVisibility(3);
 		frmNetflix.setVisible(true);
 	}
 	
-	private void setPanelGuardar() {
+	/**
+	 * Construye los componentes del Panel Fichero
+	 */
+	private void setPanelFichero() {
 		panelGuardar = new JPanel();
 		panelGuardar.setBackground(Color.BLACK);
 		panelGuardar.setBounds(0, 0, 634, 427);
@@ -215,6 +222,9 @@ public class NetflixView {
 		
 	}
 
+	/**
+	 * Construye los componentes del Panel Buscar
+	 */
 	private void setPanelBuscar() {
 		panelBuscar = new JPanel();
 		panelBuscar.setBackground(Color.BLACK);
@@ -316,6 +326,9 @@ public class NetflixView {
 		panelBuscar.add(lblUserName2);
 	}
 
+	/**
+	 * Construye los componentes del Panel Netflix
+	 */
 	private void setPanelNetflix() {
 		panelNetflix = new JPanel();
 		panelNetflix.setBackground(Color.BLACK);
@@ -407,6 +420,9 @@ public class NetflixView {
 		panelNetflix.add(btnBuscar);
 	}
 	
+	/**
+	 * Configura los diferentes Listeners
+	 */
 	private void setListeners() {
 		btnFavorito.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -416,9 +432,7 @@ public class NetflixView {
 				} else {
 					btnFavorito.setIcon(imgNoFav);
 					removeFavToFile(separador);
-				}
-				arrShows.get(pagina).setFavorito(!arrShows.get(pagina).isFavorito());
-				
+				}				
 			}
 		});
 		
@@ -478,6 +492,9 @@ public class NetflixView {
 		});
 	}
 	
+	/**
+	 * Realiza una busqueda de Shows y posteriormente los muestra por pantalla
+	 */
 	private void realizarBusqueda() {
 		if(busquedaValida()) {
 			arrShows = showDAO.getBusqueda(txfTextoABuscar.getText(), getSelectedClasificador());
@@ -492,7 +509,9 @@ public class NetflixView {
 		}
 	}
 	
-	
+	/**
+	 * Revierte cualquier busqueda hecha y posteriormente muestra todos los shows
+	 */
 	private void revertirBusqueda() {
 		arrShows = showDAO.getAll();
 		pagina = 0;
@@ -505,6 +524,10 @@ public class NetflixView {
 		searchActive = false;
 	}
 	
+	/**
+	 * Comprueba cual es el Radio Button seleccionado de los Clasificadores de busqueda
+	 * @return El string correspondiente de cada RD | Null en caso de no seleccionar ninguno
+	 */
 	private String getSelectedClasificador() {
 		if(rdbtnTitulo.isSelected()) 
 			return "title";
@@ -515,10 +538,18 @@ public class NetflixView {
 		return null;
 	}
 	
+	/**
+	 * Comprueba si la caja de texto del buscador esta vacia o no
+	 * @return True en caso de estar vacia | False en caso contrario
+	 */
 	private boolean buscadorVacio() {
 		return txfTextoABuscar.getText().isEmpty();
 	}
 	
+	/**
+	 * Comprueba si se cumplen todos los requisitos para realizar una busqueda
+	 * @return True en caso de ser posible | False en caso contrario
+	 */
 	private boolean busquedaValida() {
 		if(buscadorVacio()) {
 			JOptionPane.showMessageDialog(btnConfirmar, "ERR0R! -  Rellena todos los campos");
@@ -554,6 +585,10 @@ public class NetflixView {
 		printPagina(arrShows);
 	}
 	
+	/**
+	 * Imprime la pagina actual o imprime una pagina vacia según corresponda
+	 * @param arrShow Array de Shows para comprobar si hay shows que imprimir o no
+	 */
 	private void printPagina(ArrayList<Show> arrShow) {
 		if(arrShow.isEmpty()) 
 			printVacio();
@@ -561,6 +596,9 @@ public class NetflixView {
 			printShow(arrShow);
 	}
 	
+	/**
+	 * Imprime el panel vacio
+	 */
 	private void printVacio() {
 		lblShowTitle.setText("<HTML><u>No Title Found</u></HTML>");
 		lblDescripcion.setText("<HTML><b>Descripción:</b>  ????????</HTML>");
@@ -572,6 +610,10 @@ public class NetflixView {
 		btnFavorito.setVisible(false);
 	}
 	
+	/**
+	 * Imprime el panel con el show correspondiente a la pagina actual
+	 * @param arrShow Array de Shows para saber cual imprimir
+	 */
 	private void printShow(ArrayList<Show> arrShow) {
 		lblShowTitle.setText("<HTML><u>"+arrShow.get(pagina).getTitle()+"</u></HTML>");
 		lblDescripcion.setText("<HTML><b>Descripción:</b>  "+arrShow.get(pagina).getDescription()+"</HTML>");
@@ -586,6 +628,10 @@ public class NetflixView {
 		
 	}
 	
+	/**
+	 * Cambia la visibilidad de los paneles
+	 * @param modo Número para identificar que panel mostrar
+	 */
 	private void changeVisibility (int modo) {
 		switch (modo) {
 			case 1:
@@ -616,6 +662,10 @@ public class NetflixView {
 		}
 	}
 	
+	/**
+	 * Comprueba si un fichero ya existe y según ello mostrará un panel u otro
+	 * @param name Nombre del fichero a comprobar
+	 */
 	private void checkFileExist(String name) {
 		 fileName = name;
 
@@ -625,19 +675,24 @@ public class NetflixView {
 			changeVisibility(1);
 	}
 	
-	
+	/**
+	 * Crea un fichero nuevo y asigna cual sera el separador
+	 * @param separador Separador a utilizar
+	 */
 	private void createFile(String separador) {
 			try {
 				new File(fileName).createNewFile();
 				this.separador = separador;
-	        	System.out.println("File creado");
 	        	changeVisibility(1);
 			} catch (IOException e) {
-		    	 System.out.println("Algo salió mal");
 				e.printStackTrace();
 			}
 	}
 		
+	/**
+	 * Comprueba cual es el Radio Button seleccionado de los Separadores
+	 * @return El string correspondiente de cada RD | Null en caso de no seleccionar ninguno
+	 */
 	private String getSelectedSeparador() {
 		if(rdbtnComa.isSelected()) 
 			return this.separador = ",";
@@ -648,6 +703,10 @@ public class NetflixView {
 		return null;
 	}
 	
+	/**
+	 * Añade un favorito al fichero utilizando el separador seleccionado
+	 * @param separador El separador a utilizar
+	 */
 	private void addFavToFile(String separador) {
 		if(!favoritoExist(arrShows.get(pagina).getShowID())) {
 			try {
@@ -663,6 +722,10 @@ public class NetflixView {
 		}
 	}
 	
+	/**
+	 * Remueve un favorito del fichero
+	 * @param separador Separador a utilizar
+	 */
 	private void removeFavToFile(String separador) {
 		try {
 			Scanner sc = new Scanner(new File(fileName), "UTF-8");
@@ -684,6 +747,11 @@ public class NetflixView {
 		}
 	}
 	
+	/**
+	 * Añade un array de favoritos al fichero
+	 * @param arr Array con las IDs de los Shows
+	 * @param separador Separador a utilizar
+	 */
 	private void addFavToFile(ArrayList<String> arr, String separador) {
 			try {
 				FileWriter fw = new FileWriter(new File(fileName), false);
@@ -697,6 +765,11 @@ public class NetflixView {
 			}
 	}
 	
+	/**
+	 * Comprueba si existe el favorito señalado
+	 * @param showID El id del show a comprobar
+	 * @return True en caso de existir | False en caso contrario
+	 */
 	private boolean favoritoExist(String showID) {
 		try {
 			Scanner sc = new Scanner(new File(fileName), "UTF-8");
@@ -716,6 +789,10 @@ public class NetflixView {
 		return false;
 	}
 		
+	/**
+	 * Carga a los Shows el estado amarillo del botón favorito en caso de que existan en el fichero
+	 * @param s Show al cual asignarle el estado
+	 */
 	private void chargeFavShows(Show s) {
 		if(favoritoExist(s.getShowID())) 
 			btnFavorito.setIcon(imgFav);

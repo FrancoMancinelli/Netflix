@@ -25,9 +25,13 @@ public class ShowDAO extends AbstractDAO {
 		} 
 	}
 	
+	/**
+	 * Busca y devuelve todos los Shows de la base de datos en forma de ArrayList
+	 * @return Un ArrayList con todos los Shows
+	 */
 	public ArrayList<Show> getAll() {
-		final String QUERY = "SELECT showid, type, title, director, cast, country, date_added, release_year, rating, duration, listed_in, description"
-				+ " FROM netflix.shows";
+		final String QUERY = "SELECT showid, type, title, director, cast, country, date_added, release_year, "
+				+ "rating, duration, listed_in, description FROM netflix.shows";
 		ArrayList<Show> arrShows = new ArrayList<Show>();
 		try { 
 		         ResultSet rs = stmt.executeQuery(QUERY);		      
@@ -46,8 +50,7 @@ public class ShowDAO extends AbstractDAO {
 		        	 	String listed_in = rs.getString("listed_in");
 		        	 	String description = rs.getString("description");
 
-
-		        	 	Show s = new Show(showid, type, title, director, cast, country, date, year, rating, duration, listed_in, description, false);
+		        	 	Show s = new Show(showid, type, title, director, cast, country, date, year, rating, duration, listed_in, description);
 		        	 	arrShows.add(s);
 		         }
 		      } catch (SQLException e) {
@@ -56,6 +59,13 @@ public class ShowDAO extends AbstractDAO {
 				return arrShows;
 	}
 	
+	/**
+	/**
+	 * Busca todos los Shows de la base de datos según una palabra clave y un clasificador
+	 * @param text Palabra clave que debe incluir la busqueda
+	 * @param clasificador Clasificador para saber en que tabla se debe buscar ese text
+	 * @return Un ArrayList con todos los Shows que cumplan las condiciones
+	 */
 	public ArrayList<Show> getBusqueda(String text, String clasificador) {
 		final String QUERY = "SELECT showid, type, title, director, cast, country, date_added, release_year, rating, duration, listed_in, description"
 				+ " FROM netflix.shows WHERE "+clasificador+" LIKE '%"+ text +"%'";
@@ -77,8 +87,7 @@ public class ShowDAO extends AbstractDAO {
 		        	 	String listed_in = rs.getString("listed_in");
 		        	 	String description = rs.getString("description");
 
-
-		        	 	Show s = new Show(showid, type, title, director, cast, country, date, year, rating, duration, listed_in, description, false);
+		        	 	Show s = new Show(showid, type, title, director, cast, country, date, year, rating, duration, listed_in, description);
 		        	 	arrShows.add(s);
 		         }
 		      } catch (SQLException e) {

@@ -15,6 +15,12 @@ public class Email {
 	final String username = "netflixpicassodam";
     final String password = "#P4ssw0rd";
 	
+    /**
+     * Envia un email de Bienvenida junto a su código de verificación
+     * @param email Email al cual enviar el correo
+     * @param name Nombre del usuario
+     * @param codigo El código de verificación
+     */
 	public void sendEmailBienvenida(String email, String name, int codigo) {
 
         Properties prop = new Properties();
@@ -54,6 +60,11 @@ public class Email {
         }
 	}
 	
+	/**
+	 * Envia un correo con el nuevo código de verificación
+	 * @param email Email al cual enviar el correo
+	 * @param codigo Nuevo código de verificación
+	 */
 	public void sendEmailNewCode (String email, int codigo) {
 
         Properties prop = new Properties();
@@ -93,6 +104,11 @@ public class Email {
         }
 	}
 
+	/**
+	 * Envia un correo por haber olvidado tu contraseña
+	 * @param email Email al cual enviar el correo
+	 * @param codigo Código de validación para confirmar el cambio de contraseña
+	 */
 	public void sendEmailForgotPw (String email, int codigo) {
 
         Properties prop = new Properties();

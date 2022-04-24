@@ -5,8 +5,12 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
 
 @SuppressWarnings("serial")
+/**
+ * Clase que permite limitar la cantidad de carácteres en un TextField
+ */
 public class JTextFieldLimit extends PlainDocument {
 	  private int limit;
+	  
 	  public JTextFieldLimit(int limit) {
 	    super();
 	    this.limit = limit;

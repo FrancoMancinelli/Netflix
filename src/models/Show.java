@@ -2,6 +2,7 @@ package models;
 
 public class Show {
 	
+	// ~~~ ATRIBUTOS
 	private String showID;
 	private String type;
 	private String title;
@@ -14,11 +15,11 @@ public class Show {
 	private String duration;
 	private String listed_in;
 	private String description;
-	private boolean favorito;
 	
+	// ~~~ CONSTRUCTOR(ES)
 	public Show(String showID, String type, String title, String director, String cast, String country,
 			String date_added, String release_year, String rating, String duration, String listed_in,
-			String description, boolean favorito) {
+			String description) {
 		super();
 		this.showID = showID;
 		this.type = type;
@@ -32,27 +33,9 @@ public class Show {
 		this.duration = duration;
 		this.listed_in = listed_in;
 		this.description = description;
-		this.favorito = favorito;
 	}
 
-	@Override
-	public String toString() {
-		return "Show [showID=" + showID + ", type=" + type + ", title=" + title + ", director=" + director + ", cast="
-				+ cast + ", country=" + country + ", date_added=" + date_added + ", release_year=" + release_year
-				+ ", rating=" + rating + ", duration=" + duration + ", listed_in=" + listed_in + ", description="
-				+ description + ", favorito=" + favorito + "]";
-	}
-
-
-
-	public boolean isFavorito() {
-		return favorito;
-	}
-
-	public void setFavorito(boolean favorito) {
-		this.favorito = favorito;
-	}
-
+	// ~~~ GETTERS & SETTERS
 	public String getShowID() {
 		return showID;
 	}
@@ -149,5 +132,12 @@ public class Show {
 		this.description = description;
 	}
 	
+	@Override
+	public String toString() {
+		return "Show [showID=" + showID + ", type=" + type + ", title=" + title + ", director=" + director + ", cast="
+				+ cast + ", country=" + country + ", date_added=" + date_added + ", release_year=" + release_year
+				+ ", rating=" + rating + ", duration=" + duration + ", listed_in=" + listed_in + ", description="
+				+ description + "]";
+	}
 
 }

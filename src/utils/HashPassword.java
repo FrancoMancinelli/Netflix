@@ -6,6 +6,12 @@ import java.security.NoSuchAlgorithmException;
 
 public class HashPassword {
 	
+	/**
+	 * Realiza el hash de una contraseña
+	 * @param passwordToHash Contraseña a la cual se quiere hashear
+	 * @param salt El Salt
+	 * @return La contraseña Hasheada
+	 */
     public String hashPassword(String passwordToHash, String salt){
         String generatedPassword = null;
         try {

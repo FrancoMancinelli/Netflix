@@ -11,14 +11,6 @@ public class Usuario {
 	protected boolean validado;
 	
 	// ~~~ CONSTRUCTOR
-	/**
-	 * Construye un usuario
-	 * @param id ID del usuario
-	 * @param name Nombre del usuario
-	 * @param email Email del usuario
-	 * @param password Password del usuario
-	 * @param codigo_verificacion Codigo de verificación enviado al email
-	 */
 	public Usuario(String name, String email, String password, int codigo_verificacion) {
 		super();
 		this.id = 0;

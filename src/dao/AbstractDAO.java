@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+
 public abstract class AbstractDAO {
 	protected final String DB_URL = "jdbc:mysql://localhost/netflix";
 	protected final String USER = "root";

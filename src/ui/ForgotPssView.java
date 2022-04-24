@@ -4,9 +4,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -25,10 +22,12 @@ import utils.JTextFieldLimit;
 
 public class ForgotPssView {
 
+	//Componentes Frame General
 	private JFrame frmFgtPw;
 	private JPanel basePanel;
 	private JLabel imgFondo;
 
+	//Componentes Panel Email
 	private JPanel panelEmail;
 	private JTextField txfEmail;
 	private JButton btnVolver;
@@ -37,6 +36,7 @@ public class ForgotPssView {
 	private JLabel lblEmailInfo;
 	private JLabel lblRefEmail;
 
+	//Componentes Panel Verify
 	private JPanel panelVerify;
 	private JLabel lblVerifiacion;
 	private JTextField txfCod1;
@@ -47,6 +47,7 @@ public class ForgotPssView {
 	private JLabel lblCodInfo1;
 	private JLabel lblCodInfo3;
 	
+	//Componentes Panel Password
 	private JPanel panelPassword;
 	private JLabel lblNuevaContrasena;
 	private JLabel lblNuevaPwInfo;
@@ -57,13 +58,14 @@ public class ForgotPssView {
 	private JLabel lblRefPw1;
 	private JLabel lblRefPw2;
 	
+	//Componentes de utilidad general
 	private JFrame initialView;
 	private UsuarioDAO uDAO = new UsuarioDAO();
 	
 
 
 	/**
-	 * Create the application.
+	 * Crea la aplicación
 	 */
 	public ForgotPssView(JFrame inicio) {
 		this.initialView = inicio;
@@ -71,13 +73,16 @@ public class ForgotPssView {
 	}
 
 	/**
-	 * Initialize the contents of the frame.
+	 * Inicializa el contenido del frame
 	 */
 	private void initialize() {
 		setUIComponents();
 		setListeners();
 	}
 		
+	/**
+	 * Construye los diferentes componentes generales del Frame
+	 */
 	private void setUIComponents() {
 				
 		frmFgtPw = new JFrame();
@@ -104,6 +109,9 @@ public class ForgotPssView {
 		changeVisibility(1);
 	}
 	
+	/**
+	 * Construye los componentes del Panel Email
+	 */
 	private void setUIPanelEmail() {
 
 		panelEmail = new JPanel();
@@ -159,6 +167,9 @@ public class ForgotPssView {
 		panelEmail.add(lblRefEmail);
 	}
 	
+	/**
+	 * Construye los componentes del Panel Verify
+	 */
 	private void setUIPanelVerify() {
 		panelVerify = new JPanel();
 		panelVerify.setBackground(Color.BLACK);
@@ -234,6 +245,9 @@ public class ForgotPssView {
 		panelVerify.add(btnVerificar);
 	}
 
+	/**
+	 * Construye los componentes del Panel Password
+	 */
 	private void setUIPanelPassword() {
 
 		panelPassword = new JPanel();
@@ -292,6 +306,9 @@ public class ForgotPssView {
 		panelPassword.add(lblRefPw2);
 	}
 
+	/**
+	 * Configura los diferentes Listeners
+	 */
 	private void setListeners() {
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -321,6 +338,10 @@ public class ForgotPssView {
 		});
 	}
 	
+	/**
+	 * Cambia la visibilidad de los paneles
+	 * @param modo Número para identificar que panel mostrar
+	 */
 	public void changeVisibility (int modo) {
 		switch (modo) {
 			case 1:
@@ -345,37 +366,56 @@ public class ForgotPssView {
 		}
 	}
 
+	/**
+	 * Comprueba si la caja de texto del Email esta vacia
+	 * @return True en caso de estarlo | False en caso contrario
+	 */
 	private boolean emailVacio() {
 		return txfEmail.getText().isEmpty();
 	}
 	
+	/**
+	 * Comprueba si el email introducido ya está registrado en la base de datos
+	 * @param email Email a verificar
+	 * @return True en caso de existir | False en caso de no existir
+	 */
 	private boolean emailExist(String email) {
-		return !uDAO.emailExist(email);
+		return uDAO.emailExist(email);
 	}
 	
+	/**
+	 * Comprueba si la caja de texto del Panel Email cumple con los requisitos para continuar
+	 * @param email Email a comprobar
+	 * @return True en caso de que sea valido el Email | False en caso contrario
+	 */
 	private boolean checkValidEmail(String email) {
 		if(emailVacio()) {
 			JOptionPane.showMessageDialog(btnConfirmar, "ERR0R! -  Rellena todos los campos");
 			return false;
 		}
 		
-		if(emailExist(email)) {
+		if(!emailExist(email)) {
 			JOptionPane.showMessageDialog(btnConfirmar, "ERR0R! -  El email indicado no se encuentra registrado");
 			return false;
 		}
-		
 		return true;
 	}
 
+	/**
+	 * Comprueba que el código introducido sea el mismo que figura en la base de datos
+	 * @param email Email del usuario a quien se le verificará el código
+	 * @return True en caso de que coincidan | False en caso contrario
+	 */
 	public boolean validarCodigo(String email) {
     	int codigo = Integer.valueOf(txfCod1.getText()+txfCod2.getText()+txfCod3.getText()+txfCod4.getText());
-    	if(codigo != uDAO.getCode(email)) {
-    		return false;
-    	}
-    	return true;
+    	return codigo == uDAO.getCode(email);
     }
     
-    public void deleteLetters() {
+    /**
+     * Evita que se puedan introducir caracteres que no sean numericos.
+     * De haberlo, lo eliminará y lo remplazará por un texto vacio.
+     */
+    public void onlyNumbers() {
     	if (!txfCod1.getText().matches("[0-9]+"))
     		txfCod1.setText("");
     	if (!txfCod2.getText().matches("[0-9]+"))
@@ -386,18 +426,21 @@ public class ForgotPssView {
     		txfCod4.setText("");
     }
     
+    /**
+     * Comprueba si alguna casilla esta vacia en el Panel Verify
+     * @return True en caso de que haya alguna casilla vacia | False en caso contrario
+     */
     public boolean checkVaciosCodigo() {
-    	if(txfCod1.getText().isEmpty() ||
-    		txfCod2.getText().isEmpty() ||
-    		txfCod3.getText().isEmpty() ||
-    		txfCod4.getText().isEmpty()) {
-    		return true;
-    	}
-    	return false;
+    	return txfCod1.getText().isEmpty() || txfCod2.getText().isEmpty() || txfCod3.getText().isEmpty() || txfCod4.getText().isEmpty();
     }
     
+    /**
+     * Comprueba que se cumplan todos los requisitos para realizar la verificación de código
+     * @param email Email del usuario a realizar la validación
+     * @return True en caso de ser posible realizar la verificación | False en caso contrario
+     */
     public boolean checkVerification(String email) {
-		deleteLetters();
+		onlyNumbers();
 		
     	if(checkVaciosCodigo()) {
     		JOptionPane.showMessageDialog(btnVerificar, "ERR0R! -  Rellena todos los campos");
@@ -415,10 +458,12 @@ public class ForgotPssView {
     	return true;
     }
     
+    /**
+     * Genera un nuevo código de verificación y envia un mail al usuario con su nuevo código
+     */
     public void generateNewVerificationCode() {
 		int codigo = generateValidationCode();
-		Email e = new Email();
-		e.sendEmailForgotPw(txfEmail.getText(), codigo);
+		new Email().sendEmailForgotPw(txfEmail.getText(), codigo);
 		uDAO.changeCode(txfEmail.getText(), codigo);
 		changeVisibility(2);
 	}
@@ -431,17 +476,26 @@ public class ForgotPssView {
 		return (int) (1000 + Math.random() * 9000);
     }
     
+    /**
+     * Comprueba si alguna caja de texto de las contraseñas esta vacia
+     * @return True en caso de estarlo | False en caso contrario
+     */
     private boolean checkEmptyPasswords() {
-    	if(new String (pwPassword1.getPassword()).isEmpty() ||
-    	   new String (pwPassword2.getPassword()).isEmpty())
-    		return true;
-    	return false;
+    	return new String (pwPassword1.getPassword()).isEmpty() || new String (pwPassword2.getPassword()).isEmpty();
     }
     
+    /**
+     * Comprueba que la contraseña 1 coincida con la contraseña 2
+     * @return True en caso de que coinncidan | False en caso contrario
+     */
     private boolean samePasswords() {
     	return new String (pwPassword1.getPassword()).equals(new String (pwPassword2.getPassword()));
     }
 
+    /**
+     * Comprueba si se cumplen los requisitos para realizar un cambio de contraseña
+     * @return True en caso de ser posible | Falso en caso contrario
+     */
     private boolean validateChange() {
     	if(checkEmptyPasswords()) {
 			JOptionPane.showMessageDialog(btnConfirmar, "ERR0R! -  Rellena todos los campos");
@@ -455,10 +509,19 @@ public class ForgotPssView {
     	return true;
     }
     
+    /**
+     * Realiza un Hash a una contraseña
+     * @param passwordToHash La contraseña a aplicar el hash
+     * @param salt Salt pre-definido para aumentar la seguridad de la clave
+     * @return La contraseña hasheada
+     */
     public String hashPassword(String passwordToHash, String salt){
     	return new HashPassword().hashPassword(passwordToHash, salt);
     }
     
+    /**
+     * Confirma el cambio de contraseña y realiza el mismo en la base de datos.
+     */
     private void confirmChangePassword() {
     	if(validateChange()) {
     		String hashPass = hashPassword(new String(pwPassword1.getPassword()), "abc123");

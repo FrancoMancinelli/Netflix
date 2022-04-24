@@ -4,9 +4,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.regex.Pattern;
 
 import javax.swing.ImageIcon;
@@ -27,10 +24,12 @@ import utils.JTextFieldLimit;
 
 public class LoginView {
 
+	//Componentes Frame general
 	private JFrame frmLogin;
 	private JPanel basePanel;
 	private JLabel imgFondo;
 	
+	//Componentes Panel Login
 	private JPanel panelLogin;
 	private JLabel lblIniciarSesion;
 	private JTextField txfEmailLogin;
@@ -39,6 +38,7 @@ public class LoginView {
 	private JButton btnForgottenPss;
 	private JButton btnRegistrarse;
 	
+	//Componentes Panel Registro
 	private JPanel panelRegist;
 	private JLabel lblRegistrarse;
 	private JTextField txfEmailRegist;
@@ -48,6 +48,7 @@ public class LoginView {
 	private JButton btnEnviar;
 	private JButton btnVolver;
 	
+	//Componentes Panel Verificación
 	private JPanel panelVerify;
 	private JLabel lblVerifiacion;
 	private JTextField txfCod1;
@@ -59,22 +60,31 @@ public class LoginView {
 	private JLabel lblCodInfo3;
 	private JButton btnVerificar;
 	
+	//Componentes de utilidad general
 	private UsuarioDAO uDAO;
 	private String emailVerificacion;
 	private String username;
 	
 
 	/**
-	 * Create the application.
+	 * Crea la aplicación
 	 */
 	public LoginView() {
+		initialize();
+	}
+
+	/**
+	 * Inicializa el contenido del frame
+	 */
+	private void initialize() {
 		setUIComponents();
 		setListeners();
+    	uDAO = new UsuarioDAO();
 		frmLogin.setVisible(true);
 	}
 
 	/**
-	 * Initialize the contents of the frame.
+	 * Construye los diferentes componentes generales del Frame
 	 */
 	private void setUIComponents() {
 		frmLogin = new JFrame();
@@ -102,6 +112,9 @@ public class LoginView {
 		changeVisibility(1);
 	}
 	
+	/**
+	 * Construye los componentes del Panel Login
+	 */
 	private void setUIPanelLogin() {
 		panelLogin = new JPanel();
 		panelLogin.setBackground(Color.BLACK);
@@ -161,7 +174,9 @@ public class LoginView {
 		panelLogin.add(btnRegistrarse);
 	}
 	
-	
+	/**
+	 * Construye los componentes del Panel Regist
+	 */
 	private void setUIPanelRegist() {
 		panelRegist = new JPanel();
 		panelRegist.setBackground(Color.BLACK);
@@ -229,7 +244,9 @@ public class LoginView {
 		panelRegist.add(btnVolver);
 	}
 	
-	
+	/**
+	 * Construye los componentes del Panel Verify
+	 */
 	private void setUIPanelVerify() {
 		panelVerify = new JPanel();
 		panelVerify.setBackground(Color.BLACK);
@@ -305,7 +322,9 @@ public class LoginView {
 		panelVerify.add(btnVerificar);
 	}
 	
-	
+	/**
+	 * Configura los diferentes Listeners
+	 */
 	private void setListeners() {
 		btnIniciarSesion.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
@@ -340,7 +359,6 @@ public class LoginView {
 			
 		btnVerificar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				onlyNumbers();
 				if(checkVerification(emailVerificacion)) {
 					uDAO.validateCode(emailVerificacion);
 					username = uDAO.getUsername(emailVerificacion);
@@ -359,7 +377,10 @@ public class LoginView {
 
 	}
 	
-	
+	/**
+	 * Cambia la visibilidad de los paneles
+	 * @param modo Número para identificar que panel mostrar
+	 */
 	public void changeVisibility (int modo) {
 		switch (modo) {
 			case 1:
@@ -377,14 +398,16 @@ public class LoginView {
 				panelRegist.setVisible(false);
 				panelVerify.setVisible(true);
 				break;
-			default:
-				panelLogin.setVisible(true);
-				panelRegist.setVisible(false);
-				panelVerify.setVisible(false);
 		}
 	}
 
-	
+	/**
+	 * Comprueba si es posible realizar un Registro
+	 * @param email Email a ser registrado
+	 * @param pw1 Contraseña
+	 * @param pw2 Repite contraseña
+	 * @return True en caso de poder realizar el registro | False en caso contrario
+	 */
 	public boolean registroValido(String email, String pw1, String pw2) {
 		if(checkVaciosRegist()) {
 			JOptionPane.showMessageDialog(btnEnviar, "ERR0R! -  Rellena todos los campos");
@@ -402,7 +425,11 @@ public class LoginView {
 		return true;
 	}
 	
-	
+	/**
+	 * Comprueba si la estructura de un email es "correcta"
+	 * @param email Email a comprobar
+	 * @return True en caso de que sea valido | False en caso contrario
+	 */
     public boolean emailValido (String email) {
     	final String regex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
                 
@@ -413,6 +440,12 @@ public class LoginView {
     }
     
 
+    /**
+     * Comprueba si dos contraseñas coinciden entre ellas y si no son null
+     * @param pw1 Contraseña 1
+     * @param pw2 Contraseña 2
+     * @return True en caso de que sean iguales | False en caso contrario
+     */
     public boolean passwordMatch(String pw1, String pw2) {
     	if(pw1 != null && pw2 != null)
     		if(pw1.equals(pw2))
@@ -421,6 +454,10 @@ public class LoginView {
     	
     }
     
+    /**
+     * Comprueba si las cajas de texto del panel de registro estan vacias
+     * @return True en caso de haber alguna vacia | False en caso contrario
+     */
     public boolean checkVaciosRegist () {
     	
 		final String passwd1 = new String (pwPassword1.getPassword());
@@ -429,15 +466,25 @@ public class LoginView {
     	return txfEmailRegist.getText().isEmpty() || txfName.getText().isEmpty() || passwd1.isEmpty() || passwd2.isEmpty();
     }
     
+    /**
+     * Realiza un Hash a una contraseña
+     * @param passwordToHash La contraseña a aplicar el hash
+     * @param salt Salt pre-definido para aumentar la seguridad de la clave
+     * @return La contraseña hasheada
+     */
     public String hashPassword(String passwordToHash, String salt){
     	return new HashPassword().hashPassword(passwordToHash, salt);
     }
     
+    /**
+     * Registra un nuevo usuario en la base de datos
+     * @param name Nombre del usuario
+     * @param email Email del usuario
+     * @param password Contraseña del usuario (previamente hasheada)
+     */
     public void registrarEnBD(String name, String email, String password) {
     	int codigo = generateValidationCode();
-  
-    	uDAO = new UsuarioDAO();
-    	uDAO.registro(new Usuario(name, email, hashPassword(password, "abc123"), codigo));
+      	uDAO.registro(new Usuario(name, email, hashPassword(password, "abc123"), codigo));
     	new Email().sendEmailBienvenida(email, name, codigo);
     	emailVerificacion = email;
     }
@@ -450,11 +497,20 @@ public class LoginView {
 		return (int) (1000 + Math.random() * 9000);
     }
     
+    /**
+     * Valida el código introducido en el Panel Verify
+     * @param email Email del usuario a quien verificar el código
+     * @return True en caso de que el código sea valido | Falso en caso contrario
+     */
     public boolean validarCodigo(String email) {
     	int codigo = Integer.valueOf(txfCod1.getText()+txfCod2.getText()+txfCod3.getText()+txfCod4.getText());
     	return codigo == uDAO.getCode(email);
     }
     
+    /**
+     * Evita que se puedan introducir caracteres que no sean numericos.
+     * De haberlo, lo eliminará y lo remplazará por un texto vacio.
+     */
     public void onlyNumbers() {
     	if (!txfCod1.getText().matches("[0-9]+"))
     		txfCod1.setText("");
@@ -466,11 +522,22 @@ public class LoginView {
     		txfCod4.setText("");
     }
     
+    /**
+     * Comprueba si alguna casilla esta vacia en el Panel Verify
+     * @return True en caso de que haya alguna casilla vacia | False en caso contrario
+     */
     public boolean checkVaciosCodigo() {
     	return txfCod1.getText().isEmpty() || txfCod2.getText().isEmpty() || txfCod3.getText().isEmpty() ||txfCod4.getText().isEmpty();
     }
     
+    /**
+     * Comprueba que se cumplan todos los requisitos para realizar la verificación de código
+     * @param email Email del usuario a realizar la validación
+     * @return True en caso de ser posible realizar la verificación | False en caso contrario
+     */
     public boolean checkVerification(String email) {
+		onlyNumbers();
+
     	if(checkVaciosCodigo()) {
     		JOptionPane.showMessageDialog(btnVerificar, "ERR0R! -  Rellena todos los campos");
 			return false;
@@ -487,10 +554,18 @@ public class LoginView {
     	return true;
     }
     
+    /**
+     * Comprueba si hay cajas de texto vacias en el Panel Login
+     * @return True en caso de haber alguna caja vacia | False en caso contrario
+     */
     public boolean checkVaciosLogin() {
     	return txfEmailLogin.getText().isEmpty() || new String (pwPassLogin.getPassword()).isEmpty();
     }
     
+    /**
+     * Comprueba que se cumplan todos los requisitos para realizar la verificación de código
+     * @return True en caso de ser posible | False en caso contrario
+     */
     public boolean loginValido() {
     	if(checkVaciosLogin()) {
 			JOptionPane.showMessageDialog(btnIniciarSesion, "ERR0R! -  Rellena todos los campos");
@@ -510,6 +585,9 @@ public class LoginView {
 		return true;
     }
 
+    /**
+     * Genera un nuevo código de verificación y envia un mail al usuario con su nuevo código
+     */
 	public void generateNewVerificationCode() {
 		int codigo = generateValidationCode();
 		new Email().sendEmailNewCode(txfEmailLogin.getText(), codigo);
@@ -517,12 +595,19 @@ public class LoginView {
 		changeVisibility(3);
 	}
     
+	/**
+	 * Comprueba si la cuenta ya esta verificada
+	 * @return True en caso de estarlo | False en caso contrario
+	 */
     public boolean cuentaVerificada() {
     	return uDAO.checkVerified(txfEmailLogin.getText()) == 1;
     }
     
-    
+    /**
+     * Comprueba si los datos introducidos en el Login son validos
+     * @return True en caso de ser validos | False en caso contrario
+     */
     public boolean datosLoginCorrectos() {
-    	return new UsuarioDAO().login(txfEmailLogin.getText(), hashPassword(new String (pwPassLogin.getPassword()), "abc123"));
+    	return uDAO.login(txfEmailLogin.getText(), hashPassword(new String (pwPassLogin.getPassword()), "abc123"));
     }
 }
