@@ -25,13 +25,11 @@ public class MainApp {
 
 	public static void main(String[] args) {
 
-//		new NetflixView();
-		new LoginView();
-//		ejecutar_sonido("D:\\DAM1\\PROG\\Netflix\\assets\\tutumsound.wav");
 
+		new LoginView();
+//		ejecutar_sonido("assets/tutumsound.wav");
 //		insertarFicheroBD();
 
-//		SendEmail("manchiwolf312@gmail.com");
 	}
 
 	public static void insertarFicheroBD() {
@@ -81,9 +79,10 @@ public class MainApp {
 				}
 				
 				shows.add(new Show(trozos[0],trozos[1],trozos[2],trozos[3],trozos[4],trozos[5],
-				trozos[6],trozos[7],trozos[8],trozos[9],trozos[10],trozos[11]));
+				trozos[6],trozos[7],trozos[8],trozos[9],trozos[10],trozos[11], false));
+				
 				bd.insert(new Show(trozos[0],trozos[1],trozos[2],trozos[3],trozos[4],trozos[5],
-				trozos[6],trozos[7],trozos[8],trozos[9],trozos[10],trozos[11]));
+				trozos[6],trozos[7],trozos[8],trozos[9],trozos[10],trozos[11], false));
 				fila++;
 				System.out.println(shows.get(fila-1));
 			}
@@ -93,45 +92,6 @@ public class MainApp {
 		}
 		sc.close();		
 		System.out.println("\n"+shows.size());		
-	}
-	
-	public static void SendEmail(String receptor) {
-		final String username = "netflixpicassodam";
-        final String password = "#P4ssw0rd";
-
-        Properties prop = new Properties();
-		prop.put("mail.smtp.host", "smtp.gmail.com");
-        prop.put("mail.smtp.port", "587");
-        prop.put("mail.smtp.auth", "true");
-        prop.put("mail.smtp.ssl.trust", "*");
-        prop.put("mail.smtp.starttls.required", "true");
-        prop.put("mail.smtp.ssl.protocols", "TLSv1.2"); //TLS
-        
-        Session session = Session.getInstance(prop,
-                new javax.mail.Authenticator() {
-                    protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication(username, password);
-                    }
-                });
-
-        try {
-
-            Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress("netflixpicassodam@gmail.com"));
-            message.setRecipients(
-                    Message.RecipientType.TO,
-                    InternetAddress.parse(receptor)
-            );
-            message.setSubject("Welcome to Netflix");
-            message.setText("Dear Mail Crawler," + "\n\n Please do not spam my email!");
-
-            Transport.send(message);
-
-            System.out.println("Done");
-
-        } catch (MessagingException e) {
-            e.printStackTrace();
-        }
 	}
 	
 	private static void ejecutar_sonido(String url) {

@@ -95,7 +95,7 @@ public class LoginView {
 		imgFondo = new JLabel("");
 		imgFondo.setBounds(0, -28, 767, 619);
 		basePanel.add(imgFondo);
-		imgFondo.setIcon(new ImageIcon("D:/DAM1/PROG/Netflix/assets/fondo.PNG"));
+		imgFondo.setIcon(new ImageIcon("assets/fondo.PNG"));
 		
 		frmLogin.setVisible(true);
 		changeVisibility(1);
@@ -118,7 +118,7 @@ public class LoginView {
 		txfEmailLogin = new JTextField();
 		txfEmailLogin.setForeground(new Color(128, 140, 140));
 		txfEmailLogin.setFont(new Font("Arial", Font.PLAIN, 12));
-		txfEmailLogin.setText("jojo@gmail.com");
+		txfEmailLogin.setText("a@gmail.com");
 		txfEmailLogin.setBackground(new Color(51,51,51));
 		txfEmailLogin.setBounds(35, 87, 228, 45);
 		panelLogin.add(txfEmailLogin);
@@ -220,7 +220,7 @@ public class LoginView {
 		btnVolver = new JButton("Volver");
 		btnVolver.setForeground(Color.WHITE);
 		btnVolver.setFont(new Font("Tahoma", Font.BOLD, 11));
-		btnVolver.setIcon(new ImageIcon("D:/DAM1/PROG/Netflix/assets/nada.PNG"));
+		btnVolver.setIcon(new ImageIcon("assets/nada.PNG"));
 		btnVolver.setBackground(new Color(0,0,0));
 		btnVolver.setHorizontalAlignment(SwingConstants.RIGHT);
 		btnVolver.setBorder(null);

@@ -97,7 +97,7 @@ public class ForgotPssView {
 		imgFondo = new JLabel("");
 		imgFondo.setBounds(0, -28, 767, 619);
 		basePanel.add(imgFondo);
-		imgFondo.setIcon(new ImageIcon("D:/DAM1/PROG/Netflix/assets/fondo.PNG"));
+		imgFondo.setIcon(new ImageIcon("assets/fondo.PNG"));
 		
 		frmFgtPw.setVisible(true);
 		changeVisibility(1);
@@ -138,7 +138,7 @@ public class ForgotPssView {
 		btnVolver = new JButton("Volver");
 		btnVolver.setForeground(Color.WHITE);
 		btnVolver.setFont(new Font("Tahoma", Font.BOLD, 11));
-		btnVolver.setIcon(new ImageIcon("D:/DAM1/PROG/Netflix/assets/nada.PNG"));
+		btnVolver.setIcon(new ImageIcon("assets/nada.PNG"));
 		btnVolver.setBackground(new Color(0,0,0));
 		btnVolver.setHorizontalAlignment(SwingConstants.RIGHT);
 		btnVolver.setBorder(null);

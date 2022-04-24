@@ -4,7 +4,12 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import javax.swing.ButtonGroup;
 import javax.swing.Icon;
@@ -14,15 +19,16 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import dao.ShowDAO;
 import models.Show;
-import javax.swing.JTextField;
-import javax.swing.JRadioButton;
 
 public class NetflixView {
 
+	//Panel Netflix
 	private JFrame frmNetflix;
 	private JPanel panelNetflix;
 	private JPanel panelRojo;
@@ -40,19 +46,23 @@ public class NetflixView {
 	private JLabel lblUserName;
 	private JButton btnBuscar;
 	private JButton btnCargarFav;
-	private JButton btnGuardarFav;
 	private int favMode = 0;
-	private Icon imgFav = new ImageIcon("D:/DAM1/PROG/Netflix/assets/star_fav.png");
-	private Icon imgNoFav = new ImageIcon("D:/DAM1/PROG/Netflix/assets/star_nofav.png");
+	private Icon imgFav = new ImageIcon("assets/star_fav.png");
+	private Icon imgNoFav = new ImageIcon("assets/star_nofav.png");
 	private String username;
 	
+	//Utilidades
 	private int pagina = 0;
 	private ShowDAO showDAO;
 	private ArrayList<Show> arrShows;
 	private int modo = 1;
 	private boolean searchActive = false;
+	private String separador = ";";
+	private ArrayList<String> arrFavs;
+	private File file = new File("");
+	private static String fileName;
 
-	
+	//Panel Buscar
 	private JPanel panelBuscar;
 	private JLabel lblInfoBuscador;
 	private JPanel panelRojoBusqueda;
@@ -61,7 +71,7 @@ public class NetflixView {
 	private JRadioButton rdbtnAño;
 	private JRadioButton rdbtnDirector;
 	private JRadioButton rdbtnUnselecting;
-	private ButtonGroup group;
+	private ButtonGroup groupBuscar;
 	private JLabel lblInfoLabel1;
 	private JLabel lblInfoLabel2;
 	private JButton btnVolver;
@@ -69,9 +79,24 @@ public class NetflixView {
 	private JButton btnCancelSearch;
 	private JLabel imgProfilePic2;
 	private JLabel lblUserName2;
-
-
-
+	
+	//Panel Guardar
+	private JPanel panelGuardar;
+	private JLabel lblTituloGuardar;
+	private JPanel panelRojoGuardar;
+	private JLabel imgProfilePic3;
+	private JLabel lblUserName3;
+	private ButtonGroup groupGuardar;
+	private JRadioButton rdbtnPuntoYComa;
+	private JRadioButton rdbtnComa;
+	private JRadioButton rdbtnTabulador;
+	private JTextField txfFileName;
+	private JButton btnConfirmFileName;
+	private JLabel lblInfoGuardar;
+	private JButton btnCrear;
+	private JLabel lblInfoCrear;
+	private JPanel panelSeparador;
+	private JRadioButton rdbtnEmpty;
 	/**
 	 * Create the application.
 	 */
@@ -79,6 +104,7 @@ public class NetflixView {
 		this.username = username;
 		this.showDAO  = new ShowDAO();
 		this.arrShows = showDAO.getAll();
+		this.arrFavs = new ArrayList<String>();
 		initialize();
 	}
 
@@ -88,7 +114,6 @@ public class NetflixView {
 	private void initialize() {
 		setUIComponents();
 		setListeners();
-		printPagina(arrShows);
 	}
 
 	public void setUIComponents() {
@@ -101,10 +126,97 @@ public class NetflixView {
 
 		setPanelNetflix();
 		setPanelBuscar();
+		setPanelGuardar();
 		
-		
-		changeVisibility(1);
+		changeVisibility(3);
 		frmNetflix.setVisible(true);
+	}
+	
+	private void setPanelGuardar() {
+		panelGuardar = new JPanel();
+		panelGuardar.setBackground(Color.BLACK);
+		panelGuardar.setBounds(0, 0, 634, 427);
+		panelGuardar.setLayout(null);
+		frmNetflix.getContentPane().add(panelGuardar);
+		
+		lblTituloGuardar = new JLabel("<HTML><u>Guardado</u></HTML>");
+		lblTituloGuardar.setHorizontalAlignment(SwingConstants.CENTER);
+		lblTituloGuardar.setFont(new Font("Calibri", Font.BOLD, 60));
+		lblTituloGuardar.setForeground(Color.WHITE);
+		lblTituloGuardar.setBounds(162, 5, 302, 62);
+		panelGuardar.add(lblTituloGuardar);
+		
+		panelRojoGuardar = new JPanel();
+		panelRojoGuardar.setBounds(0, 74, 634, 287);
+		panelRojoGuardar.setBackground(new Color(216, 31, 38));
+		panelGuardar.add(panelRojoGuardar);
+		panelRojoGuardar.setLayout(null);
+		
+		txfFileName = new JTextField();
+		txfFileName.setBounds(144, 51, 330, 51);
+		panelRojoGuardar.add(txfFileName);
+		txfFileName.setColumns(10);
+		
+		btnConfirmFileName = new JButton("Confirmar");
+		btnConfirmFileName.setBounds(240, 123, 134, 34);
+		panelRojoGuardar.add(btnConfirmFileName);
+		
+		lblInfoGuardar = new JLabel("A continuaci\u00F3n indica el nombre del fichero done quieres guardar los favoritos");
+		lblInfoGuardar.setHorizontalAlignment(SwingConstants.CENTER);
+		lblInfoGuardar.setBounds(83, 11, 421, 29);
+		panelRojoGuardar.add(lblInfoGuardar);
+		
+		groupGuardar = new ButtonGroup();
+		
+		panelSeparador = new JPanel();
+		panelSeparador.setBounds(0, 168, 634, 119);
+		panelRojoGuardar.add(panelSeparador);
+		panelSeparador.setLayout(null);
+		
+		lblInfoCrear = new JLabel("<HTML>Parese que el fichero indicado a\u00FAn no existe. Por lo tanto crearemos uno nuevo. Indica a continuaci\u00F3n el separador que deseas utilizar</HTML>");
+		lblInfoCrear.setBounds(91, 11, 421, 29);
+		panelSeparador.add(lblInfoCrear);
+		
+		rdbtnComa = new JRadioButton("Coma");
+		rdbtnComa.setBounds(101, 47, 109, 23);
+		panelSeparador.add(rdbtnComa);
+		groupGuardar.add(rdbtnComa);
+		
+		rdbtnPuntoYComa = new JRadioButton("Punto y Coma");
+		rdbtnPuntoYComa.setBounds(237, 46, 109, 23);
+		panelSeparador.add(rdbtnPuntoYComa);
+		groupGuardar.add(rdbtnPuntoYComa);
+		
+		btnCrear = new JButton("Crear");
+		btnCrear.setBounds(237, 85, 89, 23);
+		panelSeparador.add(btnCrear);
+		
+		rdbtnTabulador = new JRadioButton("Tabulador");
+		rdbtnTabulador.setBounds(396, 46, 109, 23);
+		panelSeparador.add(rdbtnTabulador);
+		groupGuardar.add(rdbtnTabulador);
+		
+		rdbtnEmpty = new JRadioButton("");
+		rdbtnEmpty.setBounds(632, 123, -4, -4);
+		panelSeparador.add(rdbtnEmpty);
+		
+		groupGuardar.add(rdbtnComa);
+		groupGuardar.add(rdbtnPuntoYComa);
+		groupGuardar.add(rdbtnTabulador);
+		groupGuardar.add(rdbtnEmpty);
+		
+		imgProfilePic3 = new JLabel("");
+		imgProfilePic3.setBounds(487, 11, 57, 52);
+		panelGuardar.add(imgProfilePic3);
+		imgProfilePic3.setIcon(new ImageIcon("assets/perfil.png"));
+		
+		lblUserName3 = new JLabel(username);
+		lblUserName3.setBounds(538, 27, 86, 18);
+		lblUserName3.setHorizontalAlignment(SwingConstants.CENTER);
+		lblUserName3.setFont(new Font("Trebuchet MS", Font.BOLD, 14));
+		lblUserName3.setForeground(Color.WHITE);
+		panelGuardar.add(lblUserName3);
+		
 	}
 
 	private void setPanelBuscar() {
@@ -155,11 +267,11 @@ public class NetflixView {
 		rdbtnUnselecting.setBounds(0, 0, 0, 0);
 		panelRojoBusqueda.add(rdbtnUnselecting);
 		
-		group = new ButtonGroup();
-		group.add(rdbtnAño);
-		group.add(rdbtnDirector);
-		group.add(rdbtnTitulo);
-		group.add(rdbtnUnselecting);
+		groupBuscar = new ButtonGroup();
+		groupBuscar.add(rdbtnAño);
+		groupBuscar.add(rdbtnDirector);
+		groupBuscar.add(rdbtnTitulo);
+		groupBuscar.add(rdbtnUnselecting);
 		
 		lblInfoLabel1 = new JLabel("<HTML>A continuaci\u00F3n escriba la frase o palabra clave para clasificar su busqueda</HTML>");
 		lblInfoLabel1.setFont(new Font("Verdana", Font.BOLD, 12));
@@ -198,7 +310,7 @@ public class NetflixView {
 		imgProfilePic2 = new JLabel("");
 		imgProfilePic2.setBounds(487, 11, 57, 52);
 		panelBuscar.add(imgProfilePic2);
-		imgProfilePic2.setIcon(new ImageIcon("D:/DAM1/PROG/Netflix/assets/perfil.png"));
+		imgProfilePic2.setIcon(new ImageIcon("assets/perfil.png"));
 		
 		lblUserName2 = new JLabel(username);
 		lblUserName2.setBounds(538, 27, 86, 18);
@@ -279,12 +391,12 @@ public class NetflixView {
 		imgLetraN = new JLabel("");
 		imgLetraN.setBounds(25, 11, 46, 52);
 		panelNetflix.add(imgLetraN);
-		imgLetraN.setIcon(new ImageIcon("D:/DAM1/PROG/Netflix/assets/letra_n.png"));
+		imgLetraN.setIcon(new ImageIcon("assets/letra_n.png"));
 		
 		imgProfilePic = new JLabel("");
 		imgProfilePic.setBounds(487, 11, 57, 52);
 		panelNetflix.add(imgProfilePic);
-		imgProfilePic.setIcon(new ImageIcon("D:/DAM1/PROG/Netflix/assets/perfil.png"));
+		imgProfilePic.setIcon(new ImageIcon("assets/perfil.png"));
 		
 		lblUserName = new JLabel(username);
 		lblUserName.setBounds(538, 27, 86, 18);
@@ -299,26 +411,25 @@ public class NetflixView {
 		panelNetflix.add(btnBuscar);
 		
 		btnCargarFav = new JButton("Cargar");
-		btnCargarFav.setBounds(324, 376, 145, 33);
+		btnCargarFav.setBounds(479, 376, 145, 33);
 		btnCargarFav.setBackground(Color.WHITE);
 		panelNetflix.add(btnCargarFav);
-		
-		btnGuardarFav = new JButton("Guardar");
-		btnGuardarFav.setBounds(479, 376, 145, 33);
-		btnGuardarFav.setBackground(Color.WHITE);
-		panelNetflix.add(btnGuardarFav);
 	}
 	
 	private void setListeners() {
 		btnFavorito.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(favMode == 0) {
-					favMode = 1;
+				if(btnFavorito.getIcon() == imgNoFav)  {
 					btnFavorito.setIcon(imgFav);
+					addFavToFile(separador);
+					//arrFavs.add(arrShows.get(pagina));
 				} else {
-					favMode = 0;
 					btnFavorito.setIcon(imgNoFav);
+					removeFavToFile(separador);
+					//arrFavs.remove(arrShows.get(pagina));
 				}
+				arrShows.get(pagina).setFavorito(!arrShows.get(pagina).isFavorito());
+				
 			}
 		});
 		
@@ -355,6 +466,25 @@ public class NetflixView {
 		btnCancelSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				revertirBusqueda();
+			}
+		});
+		
+		btnConfirmFileName.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(!txfFileName.getText().isEmpty()) 
+					checkFileExist(txfFileName.getText());
+				else 
+					JOptionPane.showMessageDialog(btnConfirmFileName, "ERR0R! -  Rellena el campo solicitado");
+			}
+		});
+		
+		btnCrear.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(!getSelectedSeparador().equals(null)) {
+					createFile(getSelectedSeparador());
+				}
+				JOptionPane.showMessageDialog(btnCrear, "ERR0R! -  Selecciona un separador");
+
 			}
 		});
 	}
@@ -408,7 +538,7 @@ public class NetflixView {
 			return false;
 		}
 		
-		if(getSelectedClasificador() == null) {
+		if(getSelectedClasificador().equals(null)) {
 			JOptionPane.showMessageDialog(btnConfirmar, "ERR0R! -  Selecciona un clasificador");
 			return false;
 		}
@@ -464,6 +594,9 @@ public class NetflixView {
 		btnSiguiente.setEnabled(true);
 		btnAtras.setEnabled(true);
 		btnFavorito.setVisible(true);
+		
+		chargeFavShows(arrShows.get(pagina));
+		
 	}
 	
 	private void changeVisibility (int modo) {
@@ -471,15 +604,148 @@ public class NetflixView {
 			case 1:
 				panelNetflix.setVisible(true);
 				panelBuscar.setVisible(false);
+				panelGuardar.setVisible(false);
+				panelSeparador.setVisible(false);
+				printPagina(arrShows);
 				break;
 			case 2:
 				panelNetflix.setVisible(false);
 				panelBuscar.setVisible(true);
 				btnCancelSearch.setEnabled(searchActive);
 				break;
-			default:
-				panelNetflix.setVisible(true);
+			case 3:
+				panelNetflix.setVisible(false);
 				panelBuscar.setVisible(false);
+				panelGuardar.setVisible(true);
+				panelSeparador.setVisible(false);
+				btnConfirmFileName.setEnabled(true);
+				txfFileName.setEnabled(true);
+				break;
+			case 4:
+				panelSeparador.setVisible(true);
+				btnConfirmFileName.setEnabled(false);
+				txfFileName.setEnabled(false);
+				break;
 		}
 	}
+	
+	private void checkFileExist(String name) {
+		 fileName = name;
+
+		if(!new File(name).exists()) 
+			changeVisibility(4);
+		else 
+			changeVisibility(1);
+	}
+	
+	
+	private void createFile(String separador) {
+			try {
+				new File(fileName).createNewFile();
+				this.separador = separador;
+	        	System.out.println("File creado");
+	        	changeVisibility(1);
+			} catch (IOException e) {
+		    	 System.out.println("Algo salió mal");
+				e.printStackTrace();
+			}
+	}
+		
+	private String getSelectedSeparador() {
+		if(rdbtnComa.isSelected()) 
+			return this.separador = ",";
+		if(rdbtnPuntoYComa.isSelected()) 
+			return this.separador = ";";
+		if(rdbtnTabulador.isSelected()) 
+			return this.separador = "\t";
+		return null;
+	}
+	
+	private void addFavToFile(String separador) {
+		if(!favoritoExist(arrShows.get(pagina).getShowID())) {
+			try {
+				FileWriter fw = new FileWriter(new File(fileName), true);
+				fw.write(arrShows.get(pagina).getShowID()+separador);
+				fw.flush();
+				fw.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} else {
+			JOptionPane.showMessageDialog(btnFavorito, "ERR0R! -  Este show ya está en favoritos");
+		}
+	}
+	
+	private void removeFavToFile(String separador) {
+		try {
+			Scanner sc = new Scanner(new File(fileName), "UTF-8");
+			arrFavs.clear();
+			while (sc.hasNextLine()) {
+				String s = sc.nextLine();
+				var trozos = s.split(",|;|\t");
+				for (String t : trozos) {
+					
+					if (!arrShows.get(pagina).getShowID().equals(t)) {
+						arrFavs.add(t);
+					}
+				}
+			}
+			addFavToFile(arrFavs, separador);
+			sc.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void addFavToFile(ArrayList<String> arr, String separador) {
+			try {
+				FileWriter fw = new FileWriter(new File(fileName), false);
+				for (String s : arr) {
+					fw.write(s+separador);
+				}
+				fw.flush();
+				fw.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+	}
+	
+	private boolean favoritoExist(String showID) {
+		try {
+			Scanner sc = new Scanner(new File(fileName), "UTF-8");
+			while (sc.hasNextLine()) {
+				String s = sc.nextLine();
+				var trozos = s.split(",|;|\t");
+				for (String t : trozos) {
+					if (showID.equals(t)) {
+						sc.close();
+						return true;
+					}
+				}
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+		
+	private void chargeFavShows(Show s) {
+		if(favoritoExist(s.getShowID())) 
+			btnFavorito.setIcon(imgFav);
+		else
+			btnFavorito.setIcon(imgNoFav);
+	}
 }
+				
+//	    try {
+//	        if (f.createNewFile()) {
+//	        	changeVisibility(4);
+//	        	System.out.println("File created: " + f.getName());
+//	        } else {
+//	        	changeVisibility(1);
+//	        	System.out.println("File already exists.");
+//	        }
+//	      } catch (IOException e) {
+//	    	  System.out.println("An error occurred.");
+//	    	  e.printStackTrace();
+//	      }

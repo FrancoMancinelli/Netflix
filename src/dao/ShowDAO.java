@@ -47,7 +47,7 @@ public class ShowDAO extends AbstractDAO {
 		        	 	String description = rs.getString("description");
 
 
-		        	 	Show s = new Show(showid, type, title, director, cast, country, date, year, rating, duration, listed_in, description);
+		        	 	Show s = new Show(showid, type, title, director, cast, country, date, year, rating, duration, listed_in, description, false);
 		        	 	arrShows.add(s);
 		         }
 		      } catch (SQLException e) {
@@ -78,7 +78,7 @@ public class ShowDAO extends AbstractDAO {
 		        	 	String description = rs.getString("description");
 
 
-		        	 	Show s = new Show(showid, type, title, director, cast, country, date, year, rating, duration, listed_in, description);
+		        	 	Show s = new Show(showid, type, title, director, cast, country, date, year, rating, duration, listed_in, description, false);
 		        	 	arrShows.add(s);
 		         }
 		      } catch (SQLException e) {
