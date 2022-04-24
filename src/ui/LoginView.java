@@ -6,8 +6,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.File;
 import java.util.regex.Pattern;
 
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -90,6 +93,7 @@ public class LoginView {
 		setListeners();
     	uDAO = new UsuarioDAO();
 		frmLogin.setVisible(true);
+		ejecutarSonido("assets/tutumsound.wav"); 
 	}
 
 	/**
@@ -744,4 +748,20 @@ public class LoginView {
     public boolean datosLoginCorrectos() {
     	return uDAO.login(txfEmailLogin.getText(), hashPassword(new String (pwPassLogin.getPassword()), "abc123"));
     }
+    
+	/**
+	 * Ejecuta un efecto de sonido
+	 * @param url Url donde se encuentra ubicado el efecto de sonido
+	 */
+	private static void ejecutarSonido(String url) {
+		try {
+			Clip sonido = AudioSystem.getClip();
+			
+			File f = new File(url);
+			sonido.open(AudioSystem.getAudioInputStream(f));
+			sonido.start();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+	}	
 }
