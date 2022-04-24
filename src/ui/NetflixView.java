@@ -48,8 +48,10 @@ public class NetflixView {
 	private Icon imgFav = new ImageIcon("assets/star_fav.png");
 	private Icon imgNoFav = new ImageIcon("assets/star_nofav.png");
 	private String username;
+	private JButton btnSalir;
 	
 	//Utilidades
+	private JFrame frmLogin;
 	private int pagina = 0;
 	private ShowDAO showDAO;
 	private ArrayList<Show> arrShows;
@@ -75,29 +77,33 @@ public class NetflixView {
 	private JButton btnCancelSearch;
 	private JLabel imgProfilePic2;
 	private JLabel lblUserName2;
+	private JButton btnVerFavs;
+
 	
-	//Panel Guardar
-	private JPanel panelGuardar;
-	private JLabel lblTituloGuardar;
-	private JPanel panelRojoGuardar;
+	//Panel Fichero
+	private JPanel panelFichero;
+	private JLabel lblTituloFichero;
+	private JPanel panelRojoFichero;
 	private JLabel imgProfilePic3;
 	private JLabel lblUserName3;
-	private ButtonGroup groupGuardar;
+	private ButtonGroup groupFichero;
 	private JRadioButton rdbtnPuntoYComa;
 	private JRadioButton rdbtnComa;
 	private JRadioButton rdbtnTabulador;
 	private JTextField txfFileName;
 	private JButton btnConfirmFileName;
-	private JLabel lblInfoGuardar;
+	private JLabel lblInfoFichero;
 	private JButton btnCrear;
 	private JLabel lblInfoCrear;
 	private JPanel panelSeparador;
 	private JRadioButton rdbtnEmpty;
+	private JLabel imgLetraN2;
 	
 	/**
 	 * Crea la aplicación
 	 */
 	public NetflixView(JFrame login, String username) {
+		this.frmLogin = login;
 		this.username = username;
 		this.showDAO  = new ShowDAO();
 		this.arrShows = showDAO.getAll();
@@ -123,7 +129,6 @@ public class NetflixView {
 		frmNetflix.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmNetflix.getContentPane().setLayout(null);
 		
-
 		setPanelNetflix();
 		setPanelBuscar();
 		setPanelFichero();
@@ -136,81 +141,108 @@ public class NetflixView {
 	 * Construye los componentes del Panel Fichero
 	 */
 	private void setPanelFichero() {
-		panelGuardar = new JPanel();
-		panelGuardar.setBackground(Color.BLACK);
-		panelGuardar.setBounds(0, 0, 634, 427);
-		panelGuardar.setLayout(null);
-		frmNetflix.getContentPane().add(panelGuardar);
+		panelFichero = new JPanel();
+		panelFichero.setBackground(Color.BLACK);
+		panelFichero.setBounds(0, 0, 634, 427);
+		panelFichero.setLayout(null);
+		frmNetflix.getContentPane().add(panelFichero);
 		
-		lblTituloGuardar = new JLabel("<HTML><u>Guardado</u></HTML>");
-		lblTituloGuardar.setHorizontalAlignment(SwingConstants.CENTER);
-		lblTituloGuardar.setFont(new Font("Calibri", Font.BOLD, 60));
-		lblTituloGuardar.setForeground(Color.WHITE);
-		lblTituloGuardar.setBounds(162, 5, 302, 62);
-		panelGuardar.add(lblTituloGuardar);
+		lblTituloFichero = new JLabel("<HTML><u>Fichero</u></HTML>");
+		lblTituloFichero.setHorizontalAlignment(SwingConstants.CENTER);
+		lblTituloFichero.setFont(new Font("Calibri", Font.BOLD, 60));
+		lblTituloFichero.setForeground(Color.WHITE);
+		lblTituloFichero.setBounds(162, 5, 302, 62);
+		panelFichero.add(lblTituloFichero);
 		
-		panelRojoGuardar = new JPanel();
-		panelRojoGuardar.setBounds(0, 74, 634, 287);
-		panelRojoGuardar.setBackground(new Color(216, 31, 38));
-		panelGuardar.add(panelRojoGuardar);
-		panelRojoGuardar.setLayout(null);
+		panelRojoFichero = new JPanel();
+		panelRojoFichero.setBounds(0, 74, 634, 287);
+		panelRojoFichero.setBackground(new Color(216, 31, 38));
+		panelFichero.add(panelRojoFichero);
+		panelRojoFichero.setLayout(null);
 		
 		txfFileName = new JTextField();
+		txfFileName.setHorizontalAlignment(SwingConstants.CENTER);
+		txfFileName.setFont(new Font("Tahoma", Font.BOLD, 14));
 		txfFileName.setBounds(144, 51, 330, 51);
-		panelRojoGuardar.add(txfFileName);
+		panelRojoFichero.add(txfFileName);
 		txfFileName.setColumns(10);
+		txfFileName.setBorder(null);
 		
 		btnConfirmFileName = new JButton("Confirmar");
-		btnConfirmFileName.setBounds(240, 123, 134, 34);
-		panelRojoGuardar.add(btnConfirmFileName);
+		btnConfirmFileName.setForeground(Color.BLACK);
+		btnConfirmFileName.setBackground(Color.WHITE);
+		btnConfirmFileName.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnConfirmFileName.setBounds(227, 123, 158, 34);
+		panelRojoFichero.add(btnConfirmFileName);
+		btnConfirmFileName.setBorder(null);
 		
-		lblInfoGuardar = new JLabel("A continuaci\u00F3n indica el nombre del fichero done quieres guardar los favoritos");
-		lblInfoGuardar.setHorizontalAlignment(SwingConstants.CENTER);
-		lblInfoGuardar.setBounds(83, 11, 421, 29);
-		panelRojoGuardar.add(lblInfoGuardar);
+		lblInfoFichero = new JLabel("A continuaci\u00F3n indica el nombre del fichero done quieres guardar los favoritos");
+		lblInfoFichero.setForeground(Color.BLACK);
+		lblInfoFichero.setFont(new Font("Arial", Font.BOLD, 14));
+		lblInfoFichero.setHorizontalAlignment(SwingConstants.CENTER);
+		lblInfoFichero.setBounds(10, 11, 614, 29);
+		panelRojoFichero.add(lblInfoFichero);
 		
-		groupGuardar = new ButtonGroup();
+		groupFichero = new ButtonGroup();
 		
 		panelSeparador = new JPanel();
 		panelSeparador.setBounds(0, 168, 634, 119);
-		panelRojoGuardar.add(panelSeparador);
+		panelRojoFichero.add(panelSeparador);
 		panelSeparador.setLayout(null);
 		
 		lblInfoCrear = new JLabel("<HTML>Parese que el fichero indicado a\u00FAn no existe. Por lo tanto crearemos uno nuevo. Indica a continuaci\u00F3n el separador que deseas utilizar</HTML>");
-		lblInfoCrear.setBounds(91, 11, 421, 29);
+		lblInfoCrear.setFont(new Font("Malgun Gothic", Font.BOLD, 12));
+		lblInfoCrear.setHorizontalAlignment(SwingConstants.CENTER);
+		lblInfoCrear.setBounds(55, 5, 508, 43);
 		panelSeparador.add(lblInfoCrear);
 		
 		rdbtnComa = new JRadioButton("Coma");
-		rdbtnComa.setBounds(101, 47, 109, 23);
+		rdbtnComa.setHorizontalAlignment(SwingConstants.CENTER);
+		rdbtnComa.setBackground(Color.BLACK);
+		rdbtnComa.setForeground(Color.WHITE);
+		rdbtnComa.setFont(new Font("Leelawadee UI", Font.BOLD, 13));
+		rdbtnComa.setBounds(55, 55, 158, 23);
 		panelSeparador.add(rdbtnComa);
-		groupGuardar.add(rdbtnComa);
+		groupFichero.add(rdbtnComa);
 		
 		rdbtnPuntoYComa = new JRadioButton("Punto y Coma");
-		rdbtnPuntoYComa.setBounds(237, 46, 109, 23);
+		rdbtnPuntoYComa.setHorizontalAlignment(SwingConstants.CENTER);
+		rdbtnPuntoYComa.setFont(new Font("Leelawadee UI", Font.BOLD, 13));
+		rdbtnPuntoYComa.setBackground(Color.BLACK);
+		rdbtnPuntoYComa.setForeground(Color.WHITE);
+		rdbtnPuntoYComa.setBounds(227, 55, 158, 23);
 		panelSeparador.add(rdbtnPuntoYComa);
-		groupGuardar.add(rdbtnPuntoYComa);
+		groupFichero.add(rdbtnPuntoYComa);
 		
 		btnCrear = new JButton("Crear");
-		btnCrear.setBounds(237, 85, 89, 23);
+		btnCrear.setForeground(Color.BLACK);
+		btnCrear.setBackground(Color.LIGHT_GRAY);
+		btnCrear.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnCrear.setBounds(237, 90, 137, 23);
 		panelSeparador.add(btnCrear);
+		btnCrear.setBorder(null);
 		
 		rdbtnTabulador = new JRadioButton("Tabulador");
-		rdbtnTabulador.setBounds(396, 46, 109, 23);
+		rdbtnTabulador.setHorizontalAlignment(SwingConstants.CENTER);
+		rdbtnTabulador.setFont(new Font("Leelawadee UI", Font.BOLD, 13));
+		rdbtnTabulador.setBackground(Color.BLACK);
+		rdbtnTabulador.setForeground(Color.WHITE);
+		rdbtnTabulador.setBounds(399, 55, 158, 23);
 		panelSeparador.add(rdbtnTabulador);
-		groupGuardar.add(rdbtnTabulador);
+		groupFichero.add(rdbtnTabulador);
 		
 		rdbtnEmpty = new JRadioButton("");
 		rdbtnEmpty.setBounds(632, 123, -4, -4);
 		panelSeparador.add(rdbtnEmpty);
 		
-		groupGuardar.add(rdbtnComa);
-		groupGuardar.add(rdbtnPuntoYComa);
-		groupGuardar.add(rdbtnTabulador);
-		groupGuardar.add(rdbtnEmpty);
+		groupFichero.add(rdbtnComa);
+		groupFichero.add(rdbtnPuntoYComa);
+		groupFichero.add(rdbtnTabulador);
+		groupFichero.add(rdbtnEmpty);
 		
 		imgProfilePic3 = new JLabel("");
 		imgProfilePic3.setBounds(487, 11, 57, 52);
-		panelGuardar.add(imgProfilePic3);
+		panelFichero.add(imgProfilePic3);
 		imgProfilePic3.setIcon(new ImageIcon("assets/perfil.png"));
 		
 		lblUserName3 = new JLabel(username);
@@ -218,7 +250,12 @@ public class NetflixView {
 		lblUserName3.setHorizontalAlignment(SwingConstants.CENTER);
 		lblUserName3.setFont(new Font("Trebuchet MS", Font.BOLD, 14));
 		lblUserName3.setForeground(Color.WHITE);
-		panelGuardar.add(lblUserName3);
+		panelFichero.add(lblUserName3);
+		
+		imgLetraN2 = new JLabel("");
+		imgLetraN2.setBounds(25, 11, 46, 52);
+		panelFichero.add(imgLetraN2);
+		imgLetraN2.setIcon(new ImageIcon("assets/letra_n.png"));
 		
 	}
 
@@ -344,7 +381,7 @@ public class NetflixView {
 
 		panelShows = new JPanel();
 		panelShows.setBackground(new Color(24, 24, 24));
-		panelShows.setBounds(67, 11, 500, 265);
+		panelShows.setBounds(61, 11, 506, 265);
 		panelShows.setLayout(null);
 		panelRojo.add(panelShows);
 		
@@ -352,7 +389,7 @@ public class NetflixView {
 		btnAtras.setBackground(Color.WHITE);
 		btnAtras.setForeground(Color.BLACK);
 		btnAtras.setFont(new Font("Tahoma", Font.BOLD, 11));
-		btnAtras.setBounds(10, 11, 47, 265);
+		btnAtras.setBounds(4, 11, 47, 265);
 		panelRojo.add(btnAtras);
 		
 		btnSiguiente = new JButton(">");
@@ -415,9 +452,21 @@ public class NetflixView {
 		panelNetflix.add(lblUserName);
 		
 		btnBuscar = new JButton("Buscar");
-		btnBuscar.setBounds(10, 376, 145, 33);
+		btnBuscar.setBounds(237, 372, 145, 33);
 		btnBuscar.setBackground(Color.WHITE);
 		panelNetflix.add(btnBuscar);
+		
+		btnSalir = new JButton("Salir");
+		btnSalir.setBackground(Color.WHITE);
+		btnSalir.setForeground(Color.BLACK);
+		btnSalir.setBounds(25, 372, 145, 33);
+		panelNetflix.add(btnSalir);
+		
+		btnVerFavs = new JButton("Ver Favoritos");
+		btnVerFavs.setForeground(Color.BLACK);
+		btnVerFavs.setBackground(Color.WHITE);
+		btnVerFavs.setBounds(461, 372, 145, 33);
+		panelNetflix.add(btnVerFavs);
 	}
 	
 	/**
@@ -483,11 +532,23 @@ public class NetflixView {
 		
 		btnCrear.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(!getSelectedSeparador().equals(null)) {
+				if(getSelectedSeparador() != null) 
 					createFile(getSelectedSeparador());
-				}
-				JOptionPane.showMessageDialog(btnCrear, "ERR0R! -  Selecciona un separador");
-
+				else
+					JOptionPane.showMessageDialog(btnCrear, "ERR0R! -  Selecciona un separador");
+			}
+		});
+		
+		btnSalir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frmLogin.setVisible(true);
+				frmNetflix.dispose();
+			}
+		});
+		
+		btnVerFavs.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
 			}
 		});
 	}
@@ -556,7 +617,7 @@ public class NetflixView {
 			return false;
 		}
 		
-		if(getSelectedClasificador().equals(null)) {
+		if(getSelectedClasificador() == null) {
 			JOptionPane.showMessageDialog(btnConfirmar, "ERR0R! -  Selecciona un clasificador");
 			return false;
 		}
@@ -637,7 +698,7 @@ public class NetflixView {
 			case 1:
 				panelNetflix.setVisible(true);
 				panelBuscar.setVisible(false);
-				panelGuardar.setVisible(false);
+				panelFichero.setVisible(false);
 				panelSeparador.setVisible(false);
 				printPagina(arrShows);
 				break;
@@ -649,7 +710,7 @@ public class NetflixView {
 			case 3:
 				panelNetflix.setVisible(false);
 				panelBuscar.setVisible(false);
-				panelGuardar.setVisible(true);
+				panelFichero.setVisible(true);
 				panelSeparador.setVisible(false);
 				btnConfirmFileName.setEnabled(true);
 				txfFileName.setEnabled(true);

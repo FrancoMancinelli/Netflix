@@ -12,8 +12,8 @@ import javax.mail.internet.MimeMessage;
 
 public class Email {
 
-	final String username = "netflixpicassodam";
-    final String password = "#P4ssw0rd";
+	final static String username = "netflixpicassodam";
+    final static String password = "#P4ssw0rd";
 	
     /**
      * Envia un email de Bienvenida junto a su código de verificación
@@ -53,7 +53,6 @@ public class Email {
 
             Transport.send(message);
 
-            System.out.println("Codigo de verificación enviado correctamente");
 
         } catch (MessagingException e) {
             e.printStackTrace();
@@ -97,8 +96,6 @@ public class Email {
 
             Transport.send(message);
 
-            System.out.println("Codigo de verificación enviado correctamente");
-
         } catch (MessagingException e) {
             e.printStackTrace();
         }
@@ -141,8 +138,6 @@ public class Email {
             				+"\n\nCódigo: "+codigo);
 
             Transport.send(message);
-
-            System.out.println("Codigo de verificación enviado correctamente");
 
         } catch (MessagingException e) {
             e.printStackTrace();

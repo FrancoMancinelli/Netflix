@@ -37,6 +37,8 @@ public class LoginView {
 	private JButton btnIniciarSesion;
 	private JButton btnForgottenPss;
 	private JButton btnRegistrarse;
+	private JLabel lblContraseña;
+	private JLabel lblCorreo;
 	
 	//Componentes Panel Registro
 	private JPanel panelRegist;
@@ -47,6 +49,10 @@ public class LoginView {
 	private JPasswordField pwPassword2;
 	private JButton btnEnviar;
 	private JButton btnVolver;
+	private JLabel lblNameReg;
+	private JLabel lblEmailReg;
+	private JLabel lblPass1;
+	private JLabel lblPass2;
 	
 	//Componentes Panel Verificación
 	private JPanel panelVerify;
@@ -64,6 +70,7 @@ public class LoginView {
 	private UsuarioDAO uDAO;
 	private String emailVerificacion;
 	private String username;
+
 	
 
 	/**
@@ -131,7 +138,7 @@ public class LoginView {
 		
 		txfEmailLogin = new JTextField();
 		txfEmailLogin.setForeground(new Color(128, 140, 140));
-		txfEmailLogin.setFont(new Font("Arial", Font.PLAIN, 12));
+		txfEmailLogin.setFont(new Font("Arial", Font.PLAIN, 13));
 		txfEmailLogin.setText("a@gmail.com");
 		txfEmailLogin.setBackground(new Color(51,51,51));
 		txfEmailLogin.setBounds(35, 87, 228, 45);
@@ -140,9 +147,10 @@ public class LoginView {
 		txfEmailLogin.setBorder(null);
 		
 		pwPassLogin = new JPasswordField();
+		pwPassLogin.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		pwPassLogin.setForeground(new Color(128, 140, 140));
 		pwPassLogin.setBackground(new Color(51,51,51));
-		pwPassLogin.setBounds(35, 143, 228, 45);
+		pwPassLogin.setBounds(35, 155, 228, 45);
 		panelLogin.add(pwPassLogin);
 		pwPassLogin.setBorder(null);
 		
@@ -172,6 +180,18 @@ public class LoginView {
 		btnRegistrarse.setBackground(new Color(0, 0, 0, 220));
 		btnRegistrarse.setBounds(35, 280, 208, 23);
 		panelLogin.add(btnRegistrarse);
+		
+		lblCorreo = new JLabel("Correo:");
+		lblCorreo.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblCorreo.setForeground(Color.WHITE);
+		lblCorreo.setBounds(35, 70, 73, 14);
+		panelLogin.add(lblCorreo);
+		
+		lblContraseña = new JLabel("Contrase\u00F1a:");
+		lblContraseña.setForeground(Color.WHITE);
+		lblContraseña.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblContraseña.setBounds(35, 140, 105, 14);
+		panelLogin.add(lblContraseña);
 	}
 	
 	/**
@@ -194,35 +214,36 @@ public class LoginView {
 		txfEmailRegist = new JTextField();
 		txfEmailRegist.setText("");
 		txfEmailRegist.setForeground(new Color(128, 140, 140));
-		txfEmailRegist.setFont(new Font("Arial", Font.PLAIN, 12));
+		txfEmailRegist.setFont(new Font("Dialog", Font.PLAIN, 14));
 		txfEmailRegist.setColumns(10);
 		txfEmailRegist.setBorder(null);
 		txfEmailRegist.setBackground(new Color(51, 51, 51));
-		txfEmailRegist.setBounds(35, 127, 228, 45);
+		txfEmailRegist.setBounds(35, 150, 228, 30);
 		panelRegist.add(txfEmailRegist);
 		
 		txfName = new JTextField();
-		txfName.setText("  Nombre");
 		txfName.setForeground(new Color(128, 140, 140));
-		txfName.setFont(new Font("Arial", Font.PLAIN, 12));
+		txfName.setFont(new Font("Dialog", Font.PLAIN, 14));
 		txfName.setColumns(10);
 		txfName.setBorder(null);
 		txfName.setBackground(new Color(51, 51, 51));
-		txfName.setBounds(35, 71, 228, 45);
+		txfName.setBounds(35, 95, 228, 30);
 		panelRegist.add(txfName);
 		
 		pwPassword1 = new JPasswordField();
+		pwPassword1.setFont(new Font("Dialog", Font.PLAIN, 14));
 		pwPassword1.setForeground(new Color(128, 140, 140));
 		pwPassword1.setBorder(null);
 		pwPassword1.setBackground(new Color(51, 51, 51));
-		pwPassword1.setBounds(35, 183, 228, 45);
+		pwPassword1.setBounds(35, 205, 228, 30);
 		panelRegist.add(pwPassword1);
 		
 		pwPassword2 = new JPasswordField();
+		pwPassword2.setFont(new Font("Dialog", Font.PLAIN, 14));
 		pwPassword2.setForeground(new Color(128, 140, 140));
 		pwPassword2.setBorder(null);
 		pwPassword2.setBackground(new Color(51, 51, 51));
-		pwPassword2.setBounds(35, 239, 228, 45);
+		pwPassword2.setBounds(35, 260, 228, 30);
 		panelRegist.add(pwPassword2);
 		
 		btnEnviar = new JButton("Enviar");
@@ -242,6 +263,30 @@ public class LoginView {
 		btnVolver.setBorder(null);
 		btnVolver.setBounds(241, 11, 50, 23);
 		panelRegist.add(btnVolver);
+		
+		lblNameReg = new JLabel("Nombre:");
+		lblNameReg.setForeground(Color.WHITE);
+		lblNameReg.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblNameReg.setBounds(35, 80, 77, 14);
+		panelRegist.add(lblNameReg);
+		
+		lblEmailReg = new JLabel("Correo:");
+		lblEmailReg.setForeground(Color.WHITE);
+		lblEmailReg.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblEmailReg.setBounds(35, 135, 77, 14);
+		panelRegist.add(lblEmailReg);
+		
+		lblPass1 = new JLabel("Contrase\u00F1a:");
+		lblPass1.setForeground(Color.WHITE);
+		lblPass1.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblPass1.setBounds(35, 190, 115, 14);
+		panelRegist.add(lblPass1);
+		
+		lblPass2 = new JLabel("Repita contrase\u00F1a:");
+		lblPass2.setForeground(Color.WHITE);
+		lblPass2.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblPass2.setBounds(35, 245, 136, 14);
+		panelRegist.add(lblPass2);
 	}
 	
 	/**
