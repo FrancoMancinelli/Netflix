@@ -45,8 +45,6 @@ public class NetflixView {
 	private JLabel imgProfilePic;
 	private JLabel lblUserName;
 	private JButton btnBuscar;
-	private JButton btnCargarFav;
-	private int favMode = 0;
 	private Icon imgFav = new ImageIcon("assets/star_fav.png");
 	private Icon imgNoFav = new ImageIcon("assets/star_nofav.png");
 	private String username;
@@ -55,11 +53,9 @@ public class NetflixView {
 	private int pagina = 0;
 	private ShowDAO showDAO;
 	private ArrayList<Show> arrShows;
-	private int modo = 1;
 	private boolean searchActive = false;
 	private String separador = ";";
 	private ArrayList<String> arrFavs;
-	private File file = new File("");
 	private static String fileName;
 
 	//Panel Buscar
@@ -409,11 +405,6 @@ public class NetflixView {
 		btnBuscar.setBounds(10, 376, 145, 33);
 		btnBuscar.setBackground(Color.WHITE);
 		panelNetflix.add(btnBuscar);
-		
-		btnCargarFav = new JButton("Cargar");
-		btnCargarFav.setBounds(479, 376, 145, 33);
-		btnCargarFav.setBackground(Color.WHITE);
-		panelNetflix.add(btnCargarFav);
 	}
 	
 	private void setListeners() {
@@ -422,11 +413,9 @@ public class NetflixView {
 				if(btnFavorito.getIcon() == imgNoFav)  {
 					btnFavorito.setIcon(imgFav);
 					addFavToFile(separador);
-					//arrFavs.add(arrShows.get(pagina));
 				} else {
 					btnFavorito.setIcon(imgNoFav);
 					removeFavToFile(separador);
-					//arrFavs.remove(arrShows.get(pagina));
 				}
 				arrShows.get(pagina).setFavorito(!arrShows.get(pagina).isFavorito());
 				
@@ -527,9 +516,7 @@ public class NetflixView {
 	}
 	
 	private boolean buscadorVacio() {
-		if(txfTextoABuscar.getText().isEmpty()) 
-			return true;
-		return false;
+		return txfTextoABuscar.getText().isEmpty();
 	}
 	
 	private boolean busquedaValida() {
@@ -736,16 +723,3 @@ public class NetflixView {
 			btnFavorito.setIcon(imgNoFav);
 	}
 }
-				
-//	    try {
-//	        if (f.createNewFile()) {
-//	        	changeVisibility(4);
-//	        	System.out.println("File created: " + f.getName());
-//	        } else {
-//	        	changeVisibility(1);
-//	        	System.out.println("File already exists.");
-//	        }
-//	      } catch (IOException e) {
-//	    	  System.out.println("An error occurred.");
-//	    	  e.printStackTrace();
-//	      }

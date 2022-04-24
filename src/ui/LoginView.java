@@ -22,6 +22,7 @@ import javax.swing.SwingConstants;
 import dao.UsuarioDAO;
 import models.Usuario;
 import utils.Email;
+import utils.HashPassword;
 import utils.JTextFieldLimit;
 
 public class LoginView {
@@ -339,7 +340,7 @@ public class LoginView {
 			
 		btnVerificar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				deleteLetters();
+				onlyNumbers();
 				if(checkVerification(emailVerificacion)) {
 					uDAO.validateCode(emailVerificacion);
 					username = uDAO.getUsername(emailVerificacion);
@@ -425,39 +426,19 @@ public class LoginView {
 		final String passwd1 = new String (pwPassword1.getPassword());
 		final String passwd2 = new String (pwPassword2.getPassword());
 		
-    	if(txfEmailRegist.getText().isEmpty() || txfName.getText().isEmpty() || passwd1.isEmpty() || passwd2.isEmpty())
-    		return true;
-    	return false;
+    	return txfEmailRegist.getText().isEmpty() || txfName.getText().isEmpty() || passwd1.isEmpty() || passwd2.isEmpty();
     }
     
     public String hashPassword(String passwordToHash, String salt){
-        String generatedPassword = null;
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-512");
-            md.update(salt.getBytes(StandardCharsets.UTF_8));
-            byte[] bytes = md.digest(passwordToHash.getBytes(StandardCharsets.UTF_8));
-            StringBuilder sb = new StringBuilder();
-            for(int i=0; i< bytes.length ;i++){
-                sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
-            }
-            generatedPassword = sb.toString();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        return generatedPassword;
+    	return new HashPassword().hashPassword(passwordToHash, salt);
     }
     
     public void registrarEnBD(String name, String email, String password) {
-    	String pwHashed = hashPassword(password, "abc123");
     	int codigo = generateValidationCode();
-    	
+  
     	uDAO = new UsuarioDAO();
-    	Usuario u = new Usuario(name, email, pwHashed, codigo);
-    	
-    	uDAO.registro(u);
-    	Email e = new Email();
-    	e.sendEmailBienvenida(email, name, codigo);
-    	
+    	uDAO.registro(new Usuario(name, email, hashPassword(password, "abc123"), codigo));
+    	new Email().sendEmailBienvenida(email, name, codigo);
     	emailVerificacion = email;
     }
     
@@ -471,13 +452,10 @@ public class LoginView {
     
     public boolean validarCodigo(String email) {
     	int codigo = Integer.valueOf(txfCod1.getText()+txfCod2.getText()+txfCod3.getText()+txfCod4.getText());
-    	if(codigo != uDAO.getCode(email)) {
-    		return false;
-    	}
-    	return true;
+    	return codigo == uDAO.getCode(email);
     }
     
-    public void deleteLetters() {
+    public void onlyNumbers() {
     	if (!txfCod1.getText().matches("[0-9]+"))
     		txfCod1.setText("");
     	if (!txfCod2.getText().matches("[0-9]+"))
@@ -489,13 +467,7 @@ public class LoginView {
     }
     
     public boolean checkVaciosCodigo() {
-    	if(txfCod1.getText().isEmpty() ||
-    		txfCod2.getText().isEmpty() ||
-    		txfCod3.getText().isEmpty() ||
-    		txfCod4.getText().isEmpty()) {
-    		return true;
-    	}
-    	return false;
+    	return txfCod1.getText().isEmpty() || txfCod2.getText().isEmpty() || txfCod3.getText().isEmpty() ||txfCod4.getText().isEmpty();
     }
     
     public boolean checkVerification(String email) {
@@ -516,11 +488,7 @@ public class LoginView {
     }
     
     public boolean checkVaciosLogin() {
-    	if(txfEmailLogin.getText().isEmpty() ||
-    		new String (pwPassLogin.getPassword()).isEmpty()) {
-    		return true;
-    	}
-    	return false;
+    	return txfEmailLogin.getText().isEmpty() || new String (pwPassLogin.getPassword()).isEmpty();
     }
     
     public boolean loginValido() {
@@ -544,24 +512,17 @@ public class LoginView {
 
 	public void generateNewVerificationCode() {
 		int codigo = generateValidationCode();
-		Email e = new Email();
-		e.sendEmailNewCode(txfEmailLogin.getText(), codigo);
+		new Email().sendEmailNewCode(txfEmailLogin.getText(), codigo);
 		uDAO.changeCode(txfEmailLogin.getText(), codigo);
 		changeVisibility(3);
 	}
     
     public boolean cuentaVerificada() {
-    	if(uDAO.checkVerified(txfEmailLogin.getText()) == 0)
-    		return false;
-    	return true;
+    	return uDAO.checkVerified(txfEmailLogin.getText()) == 1;
     }
     
     
     public boolean datosLoginCorrectos() {
-    	final String hashPass = hashPassword(new String (pwPassLogin.getPassword()), "abc123");
-    	uDAO = new UsuarioDAO();
-    	if(uDAO.login(txfEmailLogin.getText(), hashPass))
-    		return true;
-    	return false;
+    	return new UsuarioDAO().login(txfEmailLogin.getText(), hashPassword(new String (pwPassLogin.getPassword()), "abc123"));
     }
 }

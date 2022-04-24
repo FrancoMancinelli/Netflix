@@ -20,6 +20,7 @@ import javax.swing.SwingConstants;
 
 import dao.UsuarioDAO;
 import utils.Email;
+import utils.HashPassword;
 import utils.JTextFieldLimit;
 
 public class ForgotPssView {
@@ -455,20 +456,7 @@ public class ForgotPssView {
     }
     
     public String hashPassword(String passwordToHash, String salt){
-        String generatedPassword = null;
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-512");
-            md.update(salt.getBytes(StandardCharsets.UTF_8));
-            byte[] bytes = md.digest(passwordToHash.getBytes(StandardCharsets.UTF_8));
-            StringBuilder sb = new StringBuilder();
-            for(int i=0; i< bytes.length ;i++){
-                sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
-            }
-            generatedPassword = sb.toString();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        return generatedPassword;
+    	return new HashPassword().hashPassword(passwordToHash, salt);
     }
     
     private void confirmChangePassword() {

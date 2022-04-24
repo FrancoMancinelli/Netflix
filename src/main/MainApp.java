@@ -27,7 +27,7 @@ public class MainApp {
 
 
 		new LoginView();
-//		ejecutar_sonido("assets/tutumsound.wav");
+		ejecutar_sonido("assets/tutumsound.wav");
 //		insertarFicheroBD();
 
 	}
